@@ -1,1 +1,34 @@
-<router-outlet></router-outlet>
+<!--! Main Layout Container -->
+<div class="min-h-screen grid xl:grid-cols-3 lg:grid-cols-2 bg-white ">
+
+  <!-- !Left Column  -->
+  <div class=" lg:col-span-1 relative ">
+    <!--! Sidebar  -->
+    <app-auth-sidebar></app-auth-sidebar>
+  </div>
+  <!-- !Right Column  -->
+  <div class="xl:col-span-2 lg:col-span-1 bg-white flex flex-col xl:me-16 lg:me-6 min-h-screen ">
+    <!--! Top Navigation -->
+    <div class="flex items-center justify-end  md:mt-16 pt-16 mx-auto ">
+      <div class="flex items-center space-x-4">
+        <div class="card flex justify-center">
+          <p-select [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="name"
+            placeholder="Select Language" class="w-full md:w-56" />
+        </div>
+        <div class="flex ">
+          <span routerLink="/auth/sign-in" routerLinkActive="bg-blue-50 rounded-xl"
+            class="text-main font-bold text-lg py-2.5 px-4 cursor-pointer mx-4 ">Sign in</span>
+        </div>
+      </div>
+      <button routerLink="/auth/sign-up" routerLinkActive="bg-blue-50"
+        class="px-4 py-2 border border-blue-200 text-main text-lg rounded-xl hover:bg-blue-50 cursor-pointer ">
+        Register
+      </button>
+    </div>
+    <!--! Router Outlet Container -->
+    <div class="flex-1 flex items-center justify-center mx-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+

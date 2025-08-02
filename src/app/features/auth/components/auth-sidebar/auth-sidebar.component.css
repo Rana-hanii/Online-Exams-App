@@ -1,0 +1,16 @@
+.custom-rounded{
+    border-bottom-right-radius: 100px;
+    border-top-right-radius: 100px;
+  
+}
+
+.custom-rounded-sm{
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+  
+  
+}
+
+.custom-shadow {
+    box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1);
+}
