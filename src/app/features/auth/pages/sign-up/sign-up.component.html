@@ -7,13 +7,38 @@
     </div>
     <!--! Form -->
     <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="space-y-4 w-full max-w-xl">
+      <!--! Username -->
+      <div class="flex flex-col gap-1">
+        <input pInputText type="text" id="username" placeholder="Username" formControlName="username"
+          [class.ng-invalid]="isInvalid('username')"
+          class="w-full max-w-md p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        @if (isInvalid('username')) {
+        @if (signUpForm.get('username')?.errors?.['required']) {
+        <p-message severity="error" size="small" variant="simple">Username is required.</p-message>
+        }
+        @if (signUpForm.get('username')?.errors?.['minlength']) {
+        <p-message severity="error" size="small" variant="simple">Username must be at least 3 characters.</p-message>
+        }
+        @if (signUpForm.get('username')?.errors?.['maxlength']) {
+        <p-message severity="error" size="small" variant="simple">Username must not exceed 20 characters.</p-message>
+        }
+        }
+      </div>
       <!--! First Name -->
       <div class="flex flex-col gap-1">
         <input pInputText type="text" id="firstName" placeholder="First Name" formControlName="firstName"
           [class.ng-invalid]="isInvalid('firstName')"
           class="w-full max-w-md p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />
         @if (isInvalid('firstName')) {
+        @if (signUpForm.get('firstName')?.errors?.['required']) {
         <p-message severity="error" size="small" variant="simple">First name is required.</p-message>
+        }
+        @if (signUpForm.get('firstName')?.errors?.['minlength']) {
+        <p-message severity="error" size="small" variant="simple">First name must be at least 3 characters.</p-message>
+        }
+        @if (signUpForm.get('firstName')?.errors?.['maxlength']) {
+        <p-message severity="error" size="small" variant="simple">First name must not exceed 20 characters.</p-message>
+        }
         }
       </div>
       <!--! Last Name -->
@@ -22,7 +47,15 @@
           [class.ng-invalid]="isInvalid('lastName')"
           class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
         @if (isInvalid('lastName')) {
+        @if (signUpForm.get('lastName')?.errors?.['required']) {
         <p-message severity="error" size="small" variant="simple">Last name is required.</p-message>
+        }
+        @if (signUpForm.get('lastName')?.errors?.['minlength']) {
+        <p-message severity="error" size="small" variant="simple">Last name must be at least 3 characters.</p-message>
+        }
+        @if (signUpForm.get('lastName')?.errors?.['maxlength']) {
+        <p-message severity="error" size="small" variant="simple">Last name must not exceed 20 characters.</p-message>
+        }
         }
       </div>
       <!--! Email -->
@@ -39,37 +72,55 @@
         }
         }
       </div>
+      <!--! Phone -->
+      <div class="flex flex-col gap-1">
+        <input pInputText type="tel" id="phone" placeholder="Phone Number" formControlName="phone"
+          [class.ng-invalid]="isInvalid('phone')"
+          class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        @if (isInvalid('phone')) {
+        @if (signUpForm.get('phone')?.errors?.['required']) {
+        <p-message severity="error" size="small" variant="simple">Phone number is required.</p-message>
+        }
+        @if (signUpForm.get('phone')?.errors?.['pattern']) {
+        <p-message severity="error" size="small" variant="simple">Please enter a valid Egyptian phone
+          number.</p-message>
+        }
+        }
+      </div>
       <!--! Password -->
       <div class="flex flex-col gap-1">
         <div [class.password-invalid]="isInvalid('password')" class="password-wrapper">
           <p-password formControlName="password" [toggleMask]="true" placeholder="Password"
-            [class.ng-invalid]="isInvalid('password')" 
-            [class.invalid-field]="isInvalid('password')"
-            class="w-full" />
+            [class.ng-invalid]="isInvalid('password')" [class.invalid-field]="isInvalid('password')" class="w-full" />
         </div>
+        <!-- Password Instructions - Show only on error -->
         @if (isInvalid('password')) {
         @if (signUpForm.get('password')?.errors?.['required']) {
         <p-message severity="error" size="small" variant="simple">Password is required.</p-message>
         }
         @if (signUpForm.get('password')?.errors?.['minlength']) {
-        <p-message severity="error" size="small" variant="simple">Password must be at least 6 characters.</p-message>
+        <p-message severity="error" size="small" variant="simple">Password must be at least 8 characters.</p-message>
+        }
+        @if (signUpForm.get('password')?.errors?.['pattern']) {
+        <p-message severity="error" size="small" variant="simple">Password must contain </p-message>
+        <p-message severity="error" size="small" variant="simple">- at least one uppercase letter</p-message>
+        <p-message severity="error" size="small" variant="simple">- one lowercase letter, one number</p-message>
+        <p-message severity="error" size="small" variant="simple">- and one special character.</p-message>
         }
         }
       </div>
-
       <!--! Confirm Password -->
       <div class="flex flex-col gap-1">
-        <div [class.password-invalid]="isInvalid('confirmPassword')" class="password-wrapper">
-          <p-password formControlName="confirmPassword" [toggleMask]="true" placeholder="Confirm Password"
-            [class.ng-invalid]="isInvalid('confirmPassword')" 
-            [class.invalid-field]="isInvalid('confirmPassword')"
+        <div [class.password-invalid]="isInvalid('rePassword')" class="password-wrapper">
+          <p-password formControlName="rePassword" [toggleMask]="true" placeholder="Confirm Password"
+            [class.ng-invalid]="isInvalid('rePassword')" [class.invalid-field]="isInvalid('rePassword')"
             class="w-full" />
         </div>
-        @if (isInvalid('confirmPassword')) {
-        @if (signUpForm.get('confirmPassword')?.errors?.['required']) {
+        @if (isInvalid('rePassword')) {
+        @if (signUpForm.get('rePassword')?.errors?.['required']) {
         <p-message severity="error" size="small" variant="simple">Please confirm your password.</p-message>
         }
-        @if (signUpForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+        @if (signUpForm.get('rePassword')?.errors?.['passwordMismatch']) {
         <p-message severity="error" size="small" variant="simple">Passwords do not match.</p-message>
         }
         }
@@ -81,9 +132,13 @@
       </div>
 
       <!--! Submit Button -->
-      <button pButton type="submit"
-        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
-        Create Account
+      <button pButton type="submit" (click)="onSubmit()" [disabled]="isSubmitting"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        @if (isSubmitting) {
+          Creating Account...
+        } @else {
+          Create Account
+        }
       </button>
 
       <!--! Divider line and icons components -->
