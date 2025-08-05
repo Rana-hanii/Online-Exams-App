@@ -66,3 +66,61 @@
 :host ::ng-deep .p-password-meter {
   background: #a1a4a9 !important;
 }
+
+ /* Light theme for toast notifications */
+ :host ::ng-deep .p-toast {
+  z-index: 1000;
+}
+
+:host ::ng-deep .p-toast .p-toast-message {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  color: #374151 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+  border-left: 4px solid #10b981 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+  border-left: 4px solid #ef4444 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-message-content {
+  padding: 1rem !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-summary {
+  font-weight: 600 !important;
+  color: #111827 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-detail {
+  color: #6b7280 !important;
+  margin-top: 0.25rem !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon {
+  color: #10b981 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error .p-toast-icon {
+  color: #ef4444 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon-close {
+  color: #9ca3af !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon-close:hover {
+  color: #6b7280 !important;
+}
+
+ 
+
+
+
+
+
