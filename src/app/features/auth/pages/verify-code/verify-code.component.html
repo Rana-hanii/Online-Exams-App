@@ -1,1 +1,48 @@
-<p>verify-code works!</p>
+<p-toast />
+<div class="flex flex-col items-center justify-center bg-white ">
+  <div class="w-full max-w-2xl bg-white ">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8 my-6">
+      <h1 class="text-2xl font-bold text-gray-900">Verify code</h1>
+    </div>
+    <!--! Form -->
+    <form [formGroup]=" verifyCodeForm" (ngSubmit)="onSubmit()" class="space-y-4 w-full max-w-xl">
+ 
+      <!--! Code -->
+      <div class="flex flex-col gap-1 ">
+        <input pInputText type="text" id="code" placeholder="Code" formControlName="code"
+          [class.ng-invalid]="isInvalid('code')"
+          autocomplete="one-time-code"
+          class="w-full p-3 border custom-shadow border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        @if (isInvalid('code')) {
+        @if ( verifyCodeForm.get('code')?.errors?.['required']) {
+        <p-message severity="error" size="small" variant="simple">Code is required.</p-message>
+        }
+        @if ( verifyCodeForm.get('code')?.errors?.['minlength']) {
+        <p-message severity="error" size="small" variant="simple">Code must be 6 digits.</p-message>
+        }
+        @if ( verifyCodeForm.get('code')?.errors?.['pattern']) {
+        <p-message severity="error" size="small" variant="simple">Code must contain only numbers.</p-message>
+        }
+        }
+      </div>
+      <!--! Forgot Password Link -->
+      <div class="text-right mt-4">
+        <span routerLink="/auth/forget-password" class="text-gray-800 cursor-pointer">Didn't receive the code ? <span class="text-main cursor-pointer">Resend </span> </span>
+      </div>
+
+      <!--! Submit Button -->
+      <button pButton type="submit" [disabled]="isSubmitting"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        @if (isSubmitting) {
+          Verifying...
+        } @else {
+          Verify
+        }
+      </button>
+      <!--! Divider line and icons components -->
+      <app-divider-and-icons></app-divider-and-icons>
+    </form>
+  </div>
+</div>
+

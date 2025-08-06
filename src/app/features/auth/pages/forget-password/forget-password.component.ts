@@ -15,19 +15,20 @@ import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 
-
 @Component({
   selector: 'app-forget-password',
-  imports: [    ReactiveFormsModule,
+  imports: [
+    ReactiveFormsModule,
     FormsModule,
     RouterLink,
     InputTextModule,
     ButtonModule,
     ToastModule,
     MessageModule,
-    DividerAndIconsComponent,],
+    DividerAndIconsComponent,
+  ],
   templateUrl: './forget-password.component.html',
-  styleUrl: './forget-password.component.css'
+  styleUrl: './forget-password.component.css',
 })
 export class ForgetPasswordComponent {
   messageService = inject(MessageService);
@@ -36,7 +37,6 @@ export class ForgetPasswordComponent {
   forgetPasswordForm: FormGroup;
   formSubmitted = false;
   isSubmitting = false;
-
 
   constructor(private fb: FormBuilder) {
     this.forgetPasswordForm = this.fb.group({
@@ -50,46 +50,46 @@ export class ForgetPasswordComponent {
       return;
     }
     this.isSubmitting = true;
-    this._AuthApiService.ForgetPassword(this.forgetPasswordForm.value).subscribe({
-      next: (res: any) => {
-        // Check if the response is an error (from catchError of(err))
-        if (res && res.status && res.status >= 400) {
-          // This is an error response
-          console.error('Forget password error:', res);
-          const errorMessage = res.error?.message || res.message || 'An error occurred during forget password';
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: errorMessage,
-            life: 8000,
-          });
-          this.isSubmitting = false;
-          this.formSubmitted = false;
-          this.forgetPasswordForm.reset();
-        } else {
-          // This is a success response
-          console.log('Forget password success:', res);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Otp sent successfully ',
-            life: 8000,
-          });
-          setTimeout(() => {
-            this.router.navigate(['/auth/verify-code']);
-          }, 9000);
-        }
-      },
-      
-    });
+    this._AuthApiService
+      .ForgetPassword(this.forgetPasswordForm.value)
+      .subscribe({
+        next: (res: any) => {
+          // Check if the response is an error (from catchError of(err))
+          if (res && res.status && res.status >= 400) {
+            // This is an error response
+            console.error('Forget password error:', res);
+            const errorMessage =
+              res.error?.message ||
+              res.message ||
+              'An error occurred during forget password';
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: errorMessage,
+              life: 8000,
+            });
+            this.isSubmitting = false;
+            this.formSubmitted = false;
+            this.forgetPasswordForm.reset();
+          } else {
+            // This is a success response
+            console.log('Forget password success:', res);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Otp sent successfully ',
+              life: 8000,
+            });
+            setTimeout(() => {
+              this.router.navigate(['/auth/verify-code']);
+            }, 9000);
+          }
+        },
+      });
   }
-
-
 
   isInvalid(controlName: string) {
     const control = this.forgetPasswordForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
   }
 }
-
-
