@@ -60,7 +60,7 @@ export class AuthApiService implements authAPI {
   }
 
   ResetPassword(data: IResetPasswordReq): Observable<IResetPasswordRes> {
-    return this._HttpClient.post(AuthEndPoint.RESETPASSWORD, data).pipe(
+    return this._HttpClient.put(AuthEndPoint.RESETPASSWORD, data).pipe(
       map((res: any) => this._AuthAPIAdaptorService.adaptResetPassword(res)),
       catchError((err) => of(err))
     );
