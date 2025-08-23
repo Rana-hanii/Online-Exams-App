@@ -1,0 +1,33 @@
+.custom-shadow {
+  box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+.custom-rounded {
+  border-bottom-right-radius: 70px !important;
+  border-top-right-radius: 70px !important;
+}
+
+.bg-main {
+  background-color: #4461f2 !important;
+}
+.text-main {
+  color: #4461f2;
+}
+
+.bg-sec {
+  background-color: #f0f4fc;
+}
+.text-sec {
+  color: #f0f4fc;
+}
+
+.link {
+  background-color: white;
+  transition: all 0.4s;
+}
+
+.link:hover {
+  background-color: #4461f2;
+  color: #f0f4fc;
+  box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.25);
+}

@@ -8,6 +8,10 @@ body {
   font-style: normal;
 }
 
+.bg-layout{
+  background-color: #FBF9F9;
+}
+
 .bg-main {
   background-color: #4461f2;
 }

@@ -1,1 +1,18 @@
+<!--! Main Layout Container -->
+<div class="min-h-screen grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 bg-layout ">
+    <div class=" lg:col-span-1 relative lg:flex hidden ">
+        <!--! Sidebar  -->
+        <app-side-bar></app-side-bar>
+    </div>
+    <div class="xl:col-span-4  md:col-span-2 col-span-1 flex flex-col ">
 
+        <div class="lg:px-12 m-auto ">
+            <app-header (toggleSidebar)="onToggleSidebar()"></app-header>
+            <!--! Router Outlet Container-->
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile sidebar overlay -->
+<app-side-bar class="lg:hidden " [isOpen]="sidebarOpen" (closeSidebarEvent)="sidebarOpen = false"></app-side-bar>
