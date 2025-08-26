@@ -1,16 +1,20 @@
+import { environment } from '../environments/environment';
+
 export class AuthEndPoint {
+  private static readonly BASE_URL = environment.apiBaseUrl;
+  
   //* REGISTER AND LOGIN
-  static SIGNIN = `https://exam.elevateegy.com/api/v1/auth/signin`;
-  static SIGNUP = `https://exam.elevateegy.com/api/v1/auth/signup`;
-  static LOGOUT = `https://exam.elevateegy.com/api/v1/auth/logout`;
+  static SIGNIN = `${AuthEndPoint.BASE_URL}/auth/signin`;
+  static SIGNUP = `${AuthEndPoint.BASE_URL}/auth/signup`;
+  static LOGOUT = `${AuthEndPoint.BASE_URL}/auth/logout`;
   //* FORGET PASSWORD
-  static FORGETPASSWORD = `https://exam.elevateegy.com/api/v1/auth/forgotPassword`;
-  static VERIFY = `https://exam.elevateegy.com/api/v1/auth/verifyResetCode`;
-  static RESETPASSWORD = `https://exam.elevateegy.com/api/v1/auth/resetPassword`;
+  static FORGETPASSWORD = `${AuthEndPoint.BASE_URL}/auth/forgotPassword`;
+  static VERIFY = `${AuthEndPoint.BASE_URL}/auth/verifyResetCode`;
+  static RESETPASSWORD = `${AuthEndPoint.BASE_URL}/auth/resetPassword`;
   //* EDIT USER DATA
-  static CHANGEPASSWORD = `https://exam.elevateegy.com/api/v1/auth/changePassword`;
-  static DELETEACCOUNT = `https://exam.elevateegy.com/api/v1/auth/deleteMe`;
-  static EDITPROFILE = `https://exam.elevateegy.com/api/v1/auth/editProfile`;
+  static CHANGEPASSWORD = `${AuthEndPoint.BASE_URL}/auth/changePassword`;
+  static DELETEACCOUNT = `${AuthEndPoint.BASE_URL}/auth/deleteMe`;
+  static EDITPROFILE = `${AuthEndPoint.BASE_URL}/auth/editProfile`;
  //* ADMIN
-  static GETINFO = `https://exam.elevateegy.com/api/v1/auth/profileData`;
+  static GETINFO = `${AuthEndPoint.BASE_URL}/auth/profileData`;
 }

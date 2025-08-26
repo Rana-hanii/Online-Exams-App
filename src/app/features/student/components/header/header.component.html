@@ -1,15 +1,17 @@
 <!-- ! lg and xl screens -->
-\<div class=" !hidden lg:!flex items-center justify-around ">
+<div class="hidden lg:flex items-center justify-between py-4 my-6 z-10">
     <p-iconfield>
         <p-inputicon class="pi pi-search" />
         <input type="text" pInputText placeholder="Search Quiz" />
     </p-iconfield>
-    <button class="px-10 py-3.5 bg-main rounded-2xl">Start Quiz</button>
-    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" size="xlarge"
-        shape="circle" />
+   
+        <button class="px-10 py-3.5 bg-main text-white rounded-2xl  transition-colors duration-500 btn-shadow">Start Quiz</button>
+        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="xlarge" shape="circle" />
+   
 </div>
+
 <!-- !Small screens -->
-<div class="lg:hidden flex items-center justify-between bg-sec custom-shadow px-6 py-10 rounded-b-3xl fixed top-0 right-0 left-0 z-50 ">
+<div class="lg:hidden flex items-center justify-between bg-sec custom-shadow px-6 py-4 rounded-b-3xl fixed top-0 right-0 left-0 z-50">
     <div class="icons text-main flex justify-center items-center">
         <span class="me-2 cursor-pointer" (click)="onToggleSidebar()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
@@ -27,7 +29,6 @@
         </span>
     </div>
     <div>
-        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" size="xlarge"
-            shape="circle" />
+        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="xlarge" shape="circle" />
     </div>
 </div>
