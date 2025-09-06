@@ -1,0 +1,126 @@
+.custom-shadow {
+  box-shadow: 0px 10.09px 20.18px 0px rgba(68, 97, 242, 0.05) !important;
+}
+
+:host ::ng-deep .p-inputtext {
+  background-color: #f9f9f9 !important;
+  border-radius: 9.91px !important;
+  color: #a1a4a9 !important;
+  font-size: 13.88px !important;
+  border: #e0e0e9 1px solid !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(68, 97, 242, 0.05) !important;
+  padding: 16px 180px 16px 16px !important;
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+  border: #3364fd 2px solid !important;
+}
+
+:host ::ng-deep .p-button {
+  background-color: #4461f2 !important ;
+  border-radius: 20px !important;
+  font-size: 16px !important;
+  box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1) !important;
+  padding: 14px !important;
+  color: white !important;
+  border: 1px solid #4461f2 !important ;
+}
+
+:host ::ng-deep .p-button:hover {
+  box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.25) !important;
+}
+
+:host ::ng-deep .p-inputtext.ng-invalid {
+  border-color: #ef4444 !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(239, 68, 68, 0.15) !important;
+}
+
+:host ::ng-deep .p-inputtext.ng-invalid:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(239, 68, 68, 0.25) !important;
+  outline: none !important;
+}
+
+:host ::ng-deep .password-wrapper.password-invalid .p-inputtext,
+:host ::ng-deep .password-wrapper.password-invalid input {
+  border-color: #ef4444 !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(239, 68, 68, 0.15) !important;
+}
+
+:host ::ng-deep .password-wrapper.password-invalid .p-inputtext:focus,
+:host ::ng-deep .password-wrapper.password-invalid input:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(239, 68, 68, 0.25) !important;
+  outline: none !important;
+}
+
+
+:host ::ng-deep .p-password-overlay {
+  background-color: #f9f9f9 !important;
+  color: #a1a4a9 !important;
+  border: #e0e0e9 1px solid !important;
+  box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.25) !important;
+  border-radius: 12px !important;
+}
+
+:host ::ng-deep .p-password-meter {
+  background: #a1a4a9 !important;
+}
+
+ /* Light theme for toast notifications */
+ :host ::ng-deep .p-toast {
+  z-index: 1000;
+}
+
+:host ::ng-deep .p-toast .p-toast-message {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  color: #374151 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+  border-left: 4px solid #10b981 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+  border-left: 4px solid #ef4444 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-message-content {
+  padding: 1rem !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-summary {
+  font-weight: 600 !important;
+  color: #111827 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-detail {
+  color: #6b7280 !important;
+  margin-top: 0.25rem !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon {
+  color: #10b981 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error .p-toast-icon {
+  color: #ef4444 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon-close {
+  color: #9ca3af !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon-close:hover {
+  color: #6b7280 !important;
+}
+
+ 
+
+
+
+
+
