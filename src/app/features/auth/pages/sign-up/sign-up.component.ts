@@ -13,6 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
+import { passwordMatchValidator } from '../../../../shared/utils/validators';
 import { DividerAndIconsComponent } from "../../components/divider-and-icons/divider-and-icons.component";
 
 @Component({
@@ -43,27 +44,9 @@ export class SignUpComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
-    }, { validators: this.passwordMatchValidator });
+    }, { validators: passwordMatchValidator });
   }
 
-  passwordMatchValidator(form: FormGroup) {
-    const password = form.get('password');
-    const confirmPassword = form.get('confirmPassword');
-    
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      confirmPassword.setErrors({ passwordMismatch: true });
-      return { passwordMismatch: true };
-    }
-    
-    if (confirmPassword?.errors?.['passwordMismatch']) {
-      delete confirmPassword.errors['passwordMismatch'];
-      if (Object.keys(confirmPassword.errors).length === 0) {
-        confirmPassword.setErrors(null);
-      }
-    }
-    
-    return null;
-  }
 
   onSubmit() {
     this.formSubmitted = true;
