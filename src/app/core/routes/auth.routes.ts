@@ -1,11 +1,16 @@
 import { Routes } from '@angular/router';
-import { AuthLayoutComponent } from '../../layouts/auth-layout/auth-layout.component'; 
+import { AuthLayoutComponent } from '../../layouts/auth-layout/auth-layout.component';
 
 export const AUTH_ROUTES: Routes = [
   {
     path: '',
     component: AuthLayoutComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'sign-in',
+        pathMatch: 'full',
+      },
       {
         path: 'sign-in',
         loadComponent: () =>
@@ -30,11 +35,6 @@ export const AUTH_ROUTES: Routes = [
         path: 'set-password',
         loadComponent: () =>
           import('../../features/auth/pages/set-password/set-password.component').then((m) => m.SetPasswordComponent),
-      },
-      {
-        path: '',
-        redirectTo: 'sign-in',
-        pathMatch: 'full',
       },
     ]
   }

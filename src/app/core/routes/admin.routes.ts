@@ -1,10 +1,15 @@
 import { Routes } from '@angular/router';
-import { AdminLayoutComponent } from '../../layouts/admin-layout/admin-layout.component'; 
+import { AdminLayoutComponent } from '../../layouts/admin-layout/admin-layout.component';
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
     component: AdminLayoutComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
       {
         path: 'dashboard',
         loadComponent: () =>
@@ -19,11 +24,6 @@ export const ADMIN_ROUTES: Routes = [
         path: 'add-question',
         loadComponent: () =>
           import('../../features/admin/pages/add-question/add-question.component').then((m) => m.AddQuestionComponent),
-      },
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
       },
     ]
   }
