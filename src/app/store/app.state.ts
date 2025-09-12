@@ -1,8 +1,11 @@
+import { ExamState } from '../shared/interfaces/exam.interface';
 import { SubjectState } from '../shared/interfaces/subject.interface';
 
 export interface AppState {
-    // * subjects state
+  // * subjects state
   subjects: SubjectState;
+  // * exams state
+  exams: ExamState;
 }
 
 export const appState: AppState = {
@@ -11,5 +14,11 @@ export const appState: AppState = {
     loading: false,
     error: null,
     selectedSubject: null
+  },
+  exams: {
+    exams: [],
+    loading: false,
+    error: null,
+    selectedExam: null
   }
 };

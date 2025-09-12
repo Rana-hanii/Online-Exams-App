@@ -7,6 +7,11 @@ export const STUDENT_ROUTES: Routes = [
     component: StudentLayoutComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
         path: 'dashboard',
         loadComponent: () =>
           import('../../features/student/pages/dashboard/dashboard.component').then((m) => m.DashboardComponent),
@@ -27,14 +32,9 @@ export const STUDENT_ROUTES: Routes = [
           import('../../features/student/pages/quiz-history/quiz-history.component').then((m) => m.QuizHistoryComponent),
       },
       {
-        path: 'exams',
+        path: 'exams/:subjectId',
         loadComponent: () =>
           import('../../features/student/pages/exams/exams.component').then((m) => m.SelectExamsComponent),
-      },
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
       },
     ],
   },
