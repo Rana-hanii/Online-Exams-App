@@ -27,9 +27,9 @@ export const STUDENT_ROUTES: Routes = [
           import('../../features/student/pages/quiz-history/quiz-history.component').then((m) => m.QuizHistoryComponent),
       },
       {
-        path: 'select-diploma',
+        path: 'exams',
         loadComponent: () =>
-          import('../../features/student/pages/select-diploma/select-diploma.component').then((m) => m.SelectDiplomaComponent),
+          import('../../features/student/pages/exams/exams.component').then((m) => m.SelectExamsComponent),
       },
       {
         path: '',

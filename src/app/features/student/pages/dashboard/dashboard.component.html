@@ -15,7 +15,7 @@
             } -->
             @for (subject of ((subjects$ | async) ?? []); track subject._id) {
                 <div class="col-span-1 w-[350px] h-[350px] mx-auto md:h-[250px] md:w-[250px] xl:w-[235px] xl:h-[250px] 2xl:w-[400px] 2xl:h-[340px] rounded-xl overflow-hidden relative shadow-2xl cursor-pointer  transition-all duration-200 "
-                    routerLink="../select-diploma">
+                    routerLink="../exams">
                     <img src="{{subject.icon}}" class="object-cover w-full h-full hover:scale-105 transition-all duration-200" alt=""> 
                     <div class="absolute bottom-5 left-5 right-5 layer backdrop-blur-lg rounded-xl p-4">
                         <h4 class="text-lg font-bold mb-1 text-white text-left">{{subject.name}}</h4>
