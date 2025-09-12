@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
+import { AuthTokenService } from '../../../../core/services/auth-token.service';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 
 @Component({
@@ -36,6 +37,7 @@ export class SignInComponent {
   messageService = inject(MessageService);
   _AuthApiService = inject(AuthApiService);
   private router = inject(Router);
+  private authTokenService = inject(AuthTokenService);
   signInForm: FormGroup;
   formSubmitted = false;
   isSubmitting = false;
@@ -80,7 +82,7 @@ export class SignInComponent {
           this.signInForm.reset();
         } else {
           // This is a success response
-          localStorage.setItem('token', res.token);
+          this.authTokenService.setToken(res.token);
           console.log('Sign in success:', res);
           this.messageService.add({
             severity: 'success',

@@ -10,7 +10,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  // مثال على استخدام الـ environment
+ 
   getApiInfo() {
     return {
       baseUrl: this.baseUrl,
@@ -20,19 +20,19 @@ export class ApiService {
     };
   }
 
-  get(endpoint: string) {
-    return this.http.get(`${this.baseUrl}${endpoint}`);
+  get<T>(endpoint: string) {
+    return this.http.get<T>(`${this.baseUrl}${endpoint}`);
   }
 
-  post(endpoint: string, data: any) {
-    return this.http.post(`${this.baseUrl}${endpoint}`, data);
+  post<T>(endpoint: string, data: any) {
+    return this.http.post<T>(`${this.baseUrl}${endpoint}`, data);
   }
 
-  put(endpoint: string, data: any) {
-    return this.http.put(`${this.baseUrl}${endpoint}`, data);
+  put<T>(endpoint: string, data: any) {
+    return this.http.put<T>(`${this.baseUrl}${endpoint}`, data);
   }
 
-  delete(endpoint: string) {
-    return this.http.delete(`${this.baseUrl}${endpoint}`);
+  delete<T>(endpoint: string) {
+    return this.http.delete<T>(`${this.baseUrl}${endpoint}`);
   }
 }

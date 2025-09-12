@@ -12,19 +12,6 @@
    
   }
 
-/* Diploma card hover and click effects */
-.diploma-card {
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
 
-.diploma-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
-}
 
-.diploma-card:active {
-  transform: translateY(-2px);
-  transition: all 0.1s ease;
-}
 
