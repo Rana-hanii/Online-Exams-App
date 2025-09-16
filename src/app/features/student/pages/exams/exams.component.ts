@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Exam } from '../../../../shared/interfaces/exam.interface';
@@ -21,6 +21,7 @@ import {
 export class SelectExamsComponent implements OnInit {
   store = inject(Store<AppState>);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   exams$: Observable<Exam[]> = this.store.select(selectAllExams);
   loading$: Observable<boolean> = this.store.select(selectExamsLoading);
@@ -37,5 +38,10 @@ export class SelectExamsComponent implements OnInit {
     if (subjectId) {
       this.store.dispatch(loadExamsBySubject({ subjectId }));
     }
+  }
+
+  startExam(examId: string): void {
+    // Navigate to exam modal using absolute path
+    this.router.navigate(['/student/exam-modal', examId]);
   }
 }

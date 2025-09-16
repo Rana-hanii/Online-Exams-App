@@ -3,6 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Subject } from '../../../../shared/interfaces/subject.interface';
 import { AppState } from '../../../../store/app.state';
 import { loadSubjects } from '../../../../store/subjects/subjects.actions';
 import {
@@ -10,7 +11,6 @@ import {
   selectSubjectsError,
   selectSubjectsLoading,
 } from '../../../../store/subjects/subjects.selectors';
-import { Subject } from '../../../../shared/interfaces/subject.interface';
 
 @Component({
   selector: 'app-dashboard',

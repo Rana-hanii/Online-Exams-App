@@ -17,7 +17,7 @@ export const API_ENDPOINTS = {
   questions: {
     base: `/questions`, //* get all questions
     byId: (id: string) => `/questions/${id}`, //* get question by id , get single question
-    onExam: (examId: string) => `/questions?exam=${examId}`, //* get questions by exam id
+    byExam: (examId: string) => `/questions?exam=${examId}`, //* get questions by exam id
     history: `/questions/history`, //* get questions history by user id
     check: `/questions/check`, //* check questions
     add: `/questions`, //* add new question
