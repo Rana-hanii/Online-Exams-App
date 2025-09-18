@@ -1,1 +1,75 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+}
+
+.bg-layout{
+  background-color: #FBF9F9;
+}
+
+.bg-main {
+  background-color: #4461f2;
+}
+.text-main {
+  color: #4461f2;
+}
+
+.bg-sec {
+    background-color: #f0f4fc;
+}
+.text-sec {
+  color: #f0f4fc;
+}
+
+.btn-shadow{
+  box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.5);
+  
+}
+.btn-shadow:hover{
+  box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.8);
+
+}
+
+.custom-shadow {
+  box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4461f2;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3351d1;
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4461f2 #f1f1f1;
+}
+
+/* Smooth scrolling for the whole page */
+html {
+  scroll-behavior: smooth;
+}
+
+ 

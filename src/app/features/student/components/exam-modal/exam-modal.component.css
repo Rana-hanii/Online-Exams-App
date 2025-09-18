@@ -1,0 +1,30 @@
+:host ::ng-deep .p-dialog {
+  background: white !important;
+  color: #4461f2 !important;
+}
+
+:host ::ng-deep .p-radiobutton-box{
+    background: white !important;
+
+}
+
+:host ::ng-deep .p-radiobutton-checked .p-radiobutton-box{
+    border-color:#4461f2  !important ;
+}
+
+
+:host ::ng-deep .p-radiobutton.p-radiobutton-checked .p-radiobutton-icon {
+  background-color: #2563eb !important;
+}
+
+:host ::ng-deep .p-button{
+    background:  #2563eb !important;
+    color: white !important;
+    border-color: #2563eb !important;
+    border-radius: 15px !important;
+   box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.5) !important;
+}
+
+:host ::ng-deep .p-button:hover{
+    box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.8) !important;
+}
