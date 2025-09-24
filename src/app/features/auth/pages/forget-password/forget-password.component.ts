@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthApiService } from 'auth-api';
+import { AdaptedForgetPasswordRes, AuthApiService } from 'auth-api';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -53,38 +53,33 @@ export class ForgetPasswordComponent {
     this._AuthApiService
       .ForgetPassword(this.forgetPasswordForm.value)
       .subscribe({
-        next: (res: any) => {
-          // Check if the response is an error (from catchError of(err))
-          if (res && res.status && res.status >= 400) {
-            // This is an error response
-            console.error('Forget password error:', res);
-            const errorMessage =
-              res.error?.message ||
-              res.message ||
-              'An error occurred during forget password';
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: errorMessage,
-              life: 8000,
-            });
-            this.isSubmitting = false;
-            this.formSubmitted = false;
-            this.forgetPasswordForm.reset();
-          } else {
-            // This is a success response
-            console.log('Forget password success:', res);
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Otp sent successfully ',
-              life: 8000,
-            });
-            setTimeout(() => {
-              this.router.navigate(['/auth/verify-code']);
-            }, 9000);
-          }
+        next: (res: AdaptedForgetPasswordRes) => {
+          // Success response
+          console.log('Forget password success:', res);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Otp sent successfully ',
+            life: 8000,
+          });
+          setTimeout(() => {
+            this.router.navigate(['/auth/verify-code']);
+          }, 9000);
         },
+        error: (error) => {
+          // Error response
+          console.error('Forget password error:', error);
+          const errorMessage = error.error?.message || error.message || 'An error occurred during forget password';
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: errorMessage,
+            life: 8000,
+          });
+          this.isSubmitting = false;
+          this.formSubmitted = false;
+          this.forgetPasswordForm.reset();
+        }
       });
   }
 

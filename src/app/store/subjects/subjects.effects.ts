@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { SubjectService } from '../../features/student/services/subject.service';
+import { Subject, Subjects } from '../../shared/interfaces/subject.interface';
 import * as SubjectsActions from './subjects.actions';
 
 @Injectable()
@@ -18,7 +19,10 @@ export class SubjectsEffects {
       switchMap(() =>
         subjectService.getAllSubjects().pipe(
           tap(res => console.log('subjects res', res)),
-          map((res: any) => SubjectsActions.loadSubjectsSuccess({ subjects: res?.subjects ?? res ?? [] })),
+          map((res: Subject[] | Subjects) => {
+            const subjects = Array.isArray(res) ? res : res?.subjects ?? [];
+            return SubjectsActions.loadSubjectsSuccess({ subjects });
+          }),
           catchError(error => of(SubjectsActions.loadSubjectsFailure({
             error: error.message || 'Failed to load subjects'
           })))

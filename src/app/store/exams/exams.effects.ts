@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { ExamService } from '../../features/student/services/exam.service';
+import { Exam, Exams } from '../../shared/interfaces/exam.interface';
 import * as ExamsActions from './exams.actions';
 
 @Injectable()
@@ -19,9 +20,10 @@ export class ExamsEffects {
         switchMap(() =>
           this.examService.getAllExams().pipe(
             tap((res) => console.log('exams res', res)),
-            map((res: any) =>
-              ExamsActions.loadExamsSuccess({ exams: res?.exams ?? res ?? [] })
-            ),
+            map((res: Exam[] | Exams) => {
+              const exams = Array.isArray(res) ? res : res?.exams ?? [];
+              return ExamsActions.loadExamsSuccess({ exams });
+            }),
             catchError((error) =>
               of(
                 ExamsActions.loadExamsFailure({
@@ -63,11 +65,10 @@ export class ExamsEffects {
         switchMap(({ subjectId }) =>
           this.examService.getExamsBySubject(subjectId).pipe(
             tap((exams) => console.log('exams by subject', exams)),
-            map((res: any) =>
-              ExamsActions.loadExamsBySubjectSuccess({
-                exams: res?.exams ?? res ?? [],
-              })
-            ),
+            map((res: Exam[] | Exams) => {
+              const exams = Array.isArray(res) ? res : res?.exams ?? [];
+              return ExamsActions.loadExamsBySubjectSuccess({ exams });
+            }),
             catchError((error) =>
               of(
                 ExamsActions.loadExamsBySubjectFailure({

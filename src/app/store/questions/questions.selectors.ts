@@ -52,7 +52,7 @@ export const selectQuestionsHistory = createSelector(
 export const selectScorePercent = createSelector(
   selectQuestionsState,
   (state) => {
-    const result = (state as any).result;
+    const result = state.result;
     if (!result) return 0;
     const correct = Number(result.correct || 0);
     const wrong = Number(result.wrong || 0);
@@ -64,7 +64,7 @@ export const selectScorePercent = createSelector(
 export const selectCorrectCount = createSelector(
   selectQuestionsState,
   (state) => {
-    const result = (state as any).result;
+    const result = state.result;
     return Number(result?.correct || 0);
   }
 );
@@ -72,7 +72,7 @@ export const selectCorrectCount = createSelector(
 export const selectIncorrectCount = createSelector(
   selectQuestionsState,
   (state) => {
-    const result = (state as any).result;
+    const result = state.result;
     return Number(result?.wrong || 0);
   }
 );

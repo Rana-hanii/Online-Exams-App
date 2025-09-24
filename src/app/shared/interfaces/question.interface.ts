@@ -37,6 +37,7 @@ export interface QuestionState {
   currentQuestionIndex: number;
   examScore: number;
   showResults: boolean;
+  result?: CheckQuestionsResponse;
   history?: QuestionHistoryResponse;
 
   questionModalOpen: boolean;

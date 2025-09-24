@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthApiService } from 'auth-api';
+import { AdaptedVerifyCodeRes, AuthApiService } from 'auth-api';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -64,35 +64,33 @@ export class VerifyCodeComponent {
     };
     console.log('Sending verify code data:', verifyCodeData);
     this._AuthApiService.VerifyCode(verifyCodeData).subscribe({
-      next: (res: any) => {
-        if (res && res.status && res.status >= 400) {
-          console.error('Verify code error:', res);
-          const errorMessage =
-            res.error?.message ||
-            res.message ||
-            'An error occurred during verify code';
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: errorMessage,
-            life: 8000,
-          });
-          this.isSubmitting = false;
-          this.formSubmitted = false;
-          this.verifyCodeForm.reset();
-        } else {
-          console.log('Verify code success:', res);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Otp verified successfully ',
-            life: 8000,
-          });
-          setTimeout(() => {
-            this.router.navigate(['/auth/set-password']);
-          }, 9000);
-        }
+      next: (res: AdaptedVerifyCodeRes) => {
+        // Success response
+        console.log('Verify code success:', res);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Otp verified successfully ',
+          life: 8000,
+        });
+        setTimeout(() => {
+          this.router.navigate(['/auth/set-password']);
+        }, 9000);
       },
+      error: (error) => {
+        // Error response
+        console.error('Verify code error:', error);
+        const errorMessage = error.error?.message || error.message || 'An error occurred during verify code';
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: errorMessage,
+          life: 8000,
+        });
+        this.isSubmitting = false;
+        this.formSubmitted = false;
+        this.verifyCodeForm.reset();
+      }
     });
   }
 

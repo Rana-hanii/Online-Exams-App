@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthApiService } from 'auth-api';
+import { AdaptedResetPasswordRes, AuthApiService } from 'auth-api';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -73,36 +73,34 @@ export class SetPasswordComponent {
     };
     console.log('Sending reset password data:', resetPasswordData);
     this._AuthApiService.ResetPassword(resetPasswordData).subscribe({
-      next: (res: any) => {
-        if (res && res.status && res.status >= 400) {
-          console.error('Reset password error:', res);
-          const errorMessage =
-            res.error?.message ||
-            res.message ||
-            'An error occurred during reset password';
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: errorMessage,
-            life: 8000,
-          });
-          this.isSubmitting = false;
-          this.formSubmitted = false;
-          this.setPasswordForm.reset();
-        } else {
-          localStorage.setItem('token', res.token);
-          console.log('Reset password success:', res);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Reset password successful',
-            life: 8000,
-          });
-          setTimeout(() => {
-            this.router.navigate(['/student/dashboard']);
-          }, 9000);
-        }
+      next: (res: AdaptedResetPasswordRes) => {
+        // Success response
+        localStorage.setItem('token', res.token);
+        console.log('Reset password success:', res);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Reset password successful',
+          life: 8000,
+        });
+        setTimeout(() => {
+          this.router.navigate(['/student/dashboard']);
+        }, 9000);
       },
+      error: (error) => {
+        // Error response
+        console.error('Reset password error:', error);
+        const errorMessage = error.error?.message || error.message || 'An error occurred during reset password';
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: errorMessage,
+          life: 8000,
+        });
+        this.isSubmitting = false;
+        this.formSubmitted = false;
+        this.setPasswordForm.reset();
+      }
     });
   }
 
