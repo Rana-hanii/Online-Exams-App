@@ -1,7 +1,8 @@
-import { environment } from '../environments/environment';
+import { inject } from '@angular/core';
+import { API_BASE_URL } from '../tokens/api-base-url.token';
 
 export class AuthEndPoint {
-  private static readonly BASE_URL = environment.apiBaseUrl;
+  private static readonly BASE_URL = inject(API_BASE_URL);
   
   //* REGISTER AND LOGIN
   static SIGNIN = `${AuthEndPoint.BASE_URL}/auth/signin`;

@@ -15,6 +15,7 @@ import { ISignUpReq } from './interfaces/sign-up/ISignUpReq';
 import { ISignUpRes } from './interfaces/sign-up/ISignUpRes';
 import { ICodeReq } from './interfaces/verify-code/ICodeReq';
 import { ICodeRes } from './interfaces/verify-code/ICodeRes';
+import { API_BASE_URL } from './tokens/api-base-url.token';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,7 @@ import { ICodeRes } from './interfaces/verify-code/ICodeRes';
 export class AuthApiService implements authAPI {
   _HttpClient = inject(HttpClient);
   _AuthAPIAdaptorService = inject(AuthAPIAdaptorService);
+  _baseUrl = inject(API_BASE_URL);
 
   
   SignUp(data: ISignUpReq): Observable<ISignUpRes> {

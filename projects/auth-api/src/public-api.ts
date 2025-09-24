@@ -32,6 +32,9 @@ export type { User } from './lib/interfaces/sign-up/ISignUpRes';
 //! Enums
 export * from './lib/enums/AuthEndPoint';
 
+//! Tokens
+export * from './lib/tokens/api-base-url.token';
+
 //! Adapters
 export * from './lib/adaptor/auth-api.adaptor';
 
