@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -6,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
-  imports: [ButtonModule]
+  imports: [ButtonModule, RouterOutlet]
 })
 export class AppComponent {
   title = 'Online-Exams-App';

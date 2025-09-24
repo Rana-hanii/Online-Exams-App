@@ -1,0 +1,22 @@
+
+
+
+
+@media (max-width: 1023px) {
+  .custom-rounded  {
+    border-bottom-right-radius: 50px !important;
+    border-bottom-left-radius: 50px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .custom-rounded {
+    border-bottom-right-radius: 100px !important;
+    border-top-right-radius: 100px !important;
+    border-bottom-left-radius: 0px !important;
+  }
+}
+
+.custom-shadow {
+  box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1) !important;
+}
