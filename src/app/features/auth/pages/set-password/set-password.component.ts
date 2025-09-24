@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
+import { AuthTokenService } from '../../../../core/services/auth-token.service';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 
 @Component({
@@ -34,6 +35,7 @@ import { DividerAndIconsComponent } from '../../components/divider-and-icons/div
 export class SetPasswordComponent {
   messageService = inject(MessageService);
   _AuthApiService = inject(AuthApiService);
+  private authTokenService = inject(AuthTokenService);
   private router = inject(Router);
   setPasswordForm: FormGroup;
   formSubmitted = false;
@@ -75,7 +77,7 @@ export class SetPasswordComponent {
     this._AuthApiService.ResetPassword(resetPasswordData).subscribe({
       next: (res: AdaptedResetPasswordRes) => {
         // Success response
-        localStorage.setItem('token', res.token);
+        this.authTokenService.setToken(res.token);
         console.log('Reset password success:', res);
         this.messageService.add({
           severity: 'success',
