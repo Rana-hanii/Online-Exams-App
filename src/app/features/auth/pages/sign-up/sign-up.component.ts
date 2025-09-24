@@ -14,7 +14,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
+import { passwordMatchValidator } from '../../../../shared/utils/validators';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
+
 
 @Component({
   selector: 'app-sign-up',
@@ -106,7 +108,6 @@ export class SignUpComponent {
 
     return null;
   }
-
   onSubmit() {
     this.formSubmitted = true;
     if (this.signUpForm.valid && !this.isSubmitting) {

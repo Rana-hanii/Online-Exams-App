@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Select } from 'primeng/select';
 import { AuthSidebarComponent } from '../../features/auth/components/auth-sidebar/auth-sidebar.component';
+import { LanguageCodes } from '../../shared/enums/language-codes.enum';
 
 interface Language {
   name: string;
-  code: string;
+  code: LanguageCodes;
 }
 
 @Component({
@@ -30,8 +31,8 @@ export class AuthLayoutComponent {
 
   ngOnInit() {
     this.languages = [
-      { name: 'English', code: 'en' },
-      { name: 'العربية', code: 'ar' },
+      { name: 'English', code: LanguageCodes.ENGLISH },
+      { name: 'العربية', code: LanguageCodes.ARABIC },
     ];
     this.selectedLanguage = this.languages[0];
   }
