@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { StudentLayoutComponent } from '../../layouts/student-layout/student-layout.component'; // عدلي المسار إذا لزم الأمر
+import { StudentLayoutComponent } from '../../layouts/student-layout/student-layout.component';
 
 export const STUDENT_ROUTES: Routes = [
   {
@@ -17,24 +17,19 @@ export const STUDENT_ROUTES: Routes = [
           import('../../features/student/pages/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
-        path: 'quiz-start',
+        path: 'exam-modal/:examId',
         loadComponent: () =>
-          import('../../features/student/pages/quiz-start/quiz-start.component').then((m) => m.QuizStartComponent),
+          import('../../features/student/components/exam-modal/exam-modal.component').then((m) => m.ExamModalComponent),
       },
       {
-        path: 'quiz-answer',
+        path: 'exams/:subjectId',
         loadComponent: () =>
-          import('../../features/student/pages/quiz-answer/quiz-answer.component').then((m) => m.QuizAnswerComponent),
+          import('../../features/student/pages/exams/exams.component').then((m) => m.SelectExamsComponent),
       },
       {
         path: 'quiz-history',
         loadComponent: () =>
           import('../../features/student/pages/quiz-history/quiz-history.component').then((m) => m.QuizHistoryComponent),
-      },
-      {
-        path: 'select-diploma',
-        loadComponent: () =>
-          import('../../features/student/pages/select-diploma/select-diploma.component').then((m) => m.SelectDiplomaComponent),
       },
     ],
   },
