@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthTokenService } from '../../../../core/services/auth-token.service';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 
@@ -32,7 +33,9 @@ import { DividerAndIconsComponent } from '../../components/divider-and-icons/div
   templateUrl: './set-password.component.html',
   styleUrl: './set-password.component.css',
 })
-export class SetPasswordComponent {
+export class SetPasswordComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+  
   messageService = inject(MessageService);
   _AuthApiService = inject(AuthApiService);
   private authTokenService = inject(AuthTokenService);
@@ -74,40 +77,47 @@ export class SetPasswordComponent {
       newPassword: this.setPasswordForm.value.password
     };
     console.log('Sending reset password data:', resetPasswordData);
-    this._AuthApiService.ResetPassword(resetPasswordData).subscribe({
-      next: (res: AdaptedResetPasswordRes) => {
-        // Success response
-        this.authTokenService.setToken(res.token);
-        console.log('Reset password success:', res);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Reset password successful',
-          life: 8000,
-        });
-        setTimeout(() => {
-          this.router.navigate(['/student/dashboard']);
-        }, 9000);
-      },
-      error: (error) => {
-        // Error response
-        console.error('Reset password error:', error);
-        const errorMessage = error.error?.message || error.message || 'An error occurred during reset password';
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: errorMessage,
-          life: 8000,
-        });
-        this.isSubmitting = false;
-        this.formSubmitted = false;
-        this.setPasswordForm.reset();
-      }
-    });
+    this._AuthApiService.ResetPassword(resetPasswordData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: AdaptedResetPasswordRes) => {
+          // Success response
+          this.authTokenService.setToken(res.token);
+          console.log('Reset password success:', res);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Reset password successful',
+            life: 8000,
+          });
+          setTimeout(() => {
+            this.router.navigate(['/student/dashboard']);
+          }, 9000);
+        },
+        error: (error) => {
+          // Error response
+          console.error('Reset password error:', error);
+          const errorMessage = error.error?.message || error.message || 'An error occurred during reset password';
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: errorMessage,
+            life: 8000,
+          });
+          this.isSubmitting = false;
+          this.formSubmitted = false;
+          this.setPasswordForm.reset();
+        }
+      });
   }
 
   isInvalid(controlName: string) {
     const control = this.setPasswordForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

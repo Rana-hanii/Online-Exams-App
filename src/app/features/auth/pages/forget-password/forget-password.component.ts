@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
+import { Subject, takeUntil } from 'rxjs';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 
 @Component({
@@ -30,7 +31,9 @@ import { DividerAndIconsComponent } from '../../components/divider-and-icons/div
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.css',
 })
-export class ForgetPasswordComponent {
+export class ForgetPasswordComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+  
   messageService = inject(MessageService);
   _AuthApiService = inject(AuthApiService);
   private router = inject(Router);
@@ -52,6 +55,7 @@ export class ForgetPasswordComponent {
     this.isSubmitting = true;
     this._AuthApiService
       .ForgetPassword(this.forgetPasswordForm.value)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: AdaptedForgetPasswordRes) => {
           // Success response
@@ -86,5 +90,10 @@ export class ForgetPasswordComponent {
   isInvalid(controlName: string) {
     const control = this.forgetPasswordForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

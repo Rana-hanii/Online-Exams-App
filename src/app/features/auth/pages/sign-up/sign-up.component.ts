@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
+import { Subject, takeUntil } from 'rxjs';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 
 
@@ -33,7 +34,9 @@ import { DividerAndIconsComponent } from '../../components/divider-and-icons/div
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+  
   messageService = inject(MessageService);
   _AuthApiService = inject(AuthApiService);
   private router = inject(Router);
@@ -120,93 +123,100 @@ export class SignUpComponent {
       });
 
       console.log(this.signUpForm.value);
-      this._AuthApiService.SignUp(this.signUpForm.value).subscribe({
-        next: (res: AdaptedSignUpRes) => {
-          // Success response
-          console.log('Signup success:', res);
-          this.isSubmitting = false;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Account Created Successfully! Redirecting to sign in...',
-            life: 8000,
-          });
-          //^ Reset form on success
-          this.signUpForm.reset();
-          this.formSubmitted = false;
+      this._AuthApiService.SignUp(this.signUpForm.value)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res: AdaptedSignUpRes) => {
+            // Success response
+            console.log('Signup success:', res);
+            this.isSubmitting = false;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Account Created Successfully! Redirecting to sign in...',
+              life: 8000,
+            });
+            //^ Reset form on success
+            this.signUpForm.reset();
+            this.formSubmitted = false;
 
-          //^ Redirect to sign in page
-          setTimeout(() => {
-            this.router.navigate(['/auth/sign-in']);
-          }, 5000);
-        },
-        error: (error) => {
-          // Error response
-          console.error('Signup error:', error);
-          let errorMessage = 'Failed to create account';
+            //^ Redirect to sign in page
+            setTimeout(() => {
+              this.router.navigate(['/auth/sign-in']);
+            }, 5000);
+          },
+          error: (error) => {
+            // Error response
+            console.error('Signup error:', error);
+            let errorMessage = 'Failed to create account';
 
-          //^ Handle error cases
-          if (error.status === 500) {
-            errorMessage =
-              'Server error occurred. Please try again later or contact support.';
-          } else if (error.status === 409) {
-            // Handle conflict errors (duplicate username/email)
-            if (error.error?.message) {
-              if (error.error.message.includes('username already exists')) {
-                errorMessage =
-                  'This username is already taken. Please choose a different username.';
-                // Clear only the username field
-                this.signUpForm.get('username')?.setValue('');
-              } else if (error.error.message.includes('email already exists')) {
-                errorMessage =
-                  'This email is already registered. Please use a different email or try signing in.';
-                // Clear only the email field
-                this.signUpForm.get('email')?.setValue('');
-              } else {
-                errorMessage = error.error.message;
-              }
-            } else {
+            //^ Handle error cases
+            if (error.status === 500) {
               errorMessage =
-                'This account already exists. Please try signing in instead.';
-            }
-          } else if (error.error?.message) {
-            if (error.error.message.includes('duplicate key error')) {
-              if (error.error.message.includes('email')) {
-                errorMessage =
-                  'This email is already registered. Please use a different email or try signing in.';
-                // Clear only the email field
-                this.signUpForm.get('email')?.setValue('');
-              } else if (error.error.message.includes('username')) {
-                errorMessage =
-                  'This username is already taken. Please choose a different username.';
-                // Clear only the username field
-                this.signUpForm.get('username')?.setValue('');
+                'Server error occurred. Please try again later or contact support.';
+            } else if (error.status === 409) {
+              // Handle conflict errors (duplicate username/email)
+              if (error.error?.message) {
+                if (error.error.message.includes('username already exists')) {
+                  errorMessage =
+                    'This username is already taken. Please choose a different username.';
+                  // Clear only the username field
+                  this.signUpForm.get('username')?.setValue('');
+                } else if (error.error.message.includes('email already exists')) {
+                  errorMessage =
+                    'This email is already registered. Please use a different email or try signing in.';
+                  // Clear only the email field
+                  this.signUpForm.get('email')?.setValue('');
+                } else {
+                  errorMessage = error.error.message;
+                }
               } else {
                 errorMessage =
                   'This account already exists. Please try signing in instead.';
               }
-            } else {
-              errorMessage = error.error.message;
+            } else if (error.error?.message) {
+              if (error.error.message.includes('duplicate key error')) {
+                if (error.error.message.includes('email')) {
+                  errorMessage =
+                    'This email is already registered. Please use a different email or try signing in.';
+                  // Clear only the email field
+                  this.signUpForm.get('email')?.setValue('');
+                } else if (error.error.message.includes('username')) {
+                  errorMessage =
+                    'This username is already taken. Please choose a different username.';
+                  // Clear only the username field
+                  this.signUpForm.get('username')?.setValue('');
+                } else {
+                  errorMessage =
+                    'This account already exists. Please try signing in instead.';
+                }
+              } else {
+                errorMessage = error.error.message;
+              }
             }
+
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Registration Failed',
+              detail: errorMessage,
+              life: 8000,
+            });
+
+            //^ Reset form submission state on error (but keep form data)
+            this.formSubmitted = false;
+            this.isSubmitting = false;
           }
-
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Registration Failed',
-            detail: errorMessage,
-            life: 8000,
-          });
-
-          //^ Reset form submission state on error (but keep form data)
-          this.formSubmitted = false;
-          this.isSubmitting = false;
-        }
-      });
+        });
     }
   }
 
   isInvalid(controlName: string) {
     const control = this.signUpForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
