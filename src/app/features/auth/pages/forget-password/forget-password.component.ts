@@ -15,6 +15,7 @@ import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { Subject, takeUntil } from 'rxjs';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
+import { PasswordResetService } from '../../services/password-reset.service';
 
 @Component({
   selector: 'app-forget-password',
@@ -37,6 +38,7 @@ export class ForgetPasswordComponent implements OnDestroy {
   messageService = inject(MessageService);
   _AuthApiService = inject(AuthApiService);
   private router = inject(Router);
+  private passwordResetService = inject(PasswordResetService);
   forgetPasswordForm: FormGroup;
   formSubmitted = false;
   isSubmitting = false;
@@ -60,6 +62,8 @@ export class ForgetPasswordComponent implements OnDestroy {
         next: (res: AdaptedForgetPasswordRes) => {
           // Success response
           console.log('Forget password success:', res);
+          // Store the email for use in subsequent steps
+          this.passwordResetService.setResetEmail(this.forgetPasswordForm.value.email);
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
