@@ -32,12 +32,12 @@
   box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.25);
 }
 
-/* Ensure sidebar overlays header on hover */
+/* Fixed sidebar positioning */
 .sidebar-container {
-  position: relative;
+  position: fixed;
   z-index: 50;
-}
-
-.sidebar-container:hover {
-  z-index: 60;
+  width: 16rem; /* 256px = w-64 */
+  height: 100vh;
+  left: 0;
+  top: 0;
 }
