@@ -56,7 +56,27 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
           ),
         ],
       ],
-    });
+      confirmPassword: ['', [Validators.required]],
+    }, { validators: this.passwordMatchValidator });
+  }
+
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password');
+    const confirmPassword = form.get('confirmPassword');
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+
+    if (confirmPassword?.errors?.['passwordMismatch']) {
+      delete confirmPassword.errors['passwordMismatch'];
+      if (Object.keys(confirmPassword.errors).length === 0) {
+        confirmPassword.setErrors(null);
+      }
+    }
+
+    return null;
   }
 
   ngOnInit(): void {
@@ -94,7 +114,7 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Reset password successful',
+            detail: 'Password set successfully',
             life: 8000,
           });
           setTimeout(() => {
@@ -121,6 +141,12 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
   isInvalid(controlName: string) {
     const control = this.setPasswordForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
+  }
+
+  passwordsMatch(): boolean {
+    const password = this.setPasswordForm.get('password')?.value;
+    const confirmPassword = this.setPasswordForm.get('confirmPassword')?.value;
+    return password && confirmPassword && password === confirmPassword;
   }
 
   ngOnDestroy(): void {
