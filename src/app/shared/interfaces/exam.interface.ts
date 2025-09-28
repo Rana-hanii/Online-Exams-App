@@ -15,9 +15,12 @@ export interface Exam {
 
 export interface ExamState {
   exams: Exam[];
+  examHistory: ExamHistoryItem[];
   loading: boolean;
   error: string | null;
   selectedExam: Exam | null;
+  selectedHistoryExam: ExamHistoryItem | null;
+  historyModalOpen: boolean;
 }
 
 interface Metadata {
@@ -26,35 +29,38 @@ interface Metadata {
   limit: number;
 }
 
-// Exam History interfaces
+// * Exam History Interfaces
+export interface ExamHistoryResponse {
+  message: string;
+  history: ExamHistoryItem[];
+}
+
 export interface ExamHistoryItem {
   _id: string;
-  examId: string;
-  examTitle: string;
-  subjectName: string;
+  exam: ExamHistoryExam;
+  user: string;
+  score: number;
   totalQuestions: number;
   correctAnswers: number;
   wrongAnswers: number;
-  score: number;
-  timeSpent: number; // in seconds
+  timeSpent: number;
   completedAt: string;
-  questions: ExamHistoryQuestion[];
+  questions?: ExamHistoryQuestion[];
+}
+
+export interface ExamHistoryExam {
+  _id: string;
+  title: string;
+  duration: number;
+  subject: string;
+  numberOfQuestions: number;
 }
 
 export interface ExamHistoryQuestion {
   questionId: string;
   question: string;
-  answers: ExamHistoryAnswer[];
-  correctAnswer: string;
   userAnswer: string;
+  correctAnswer: string;
   isCorrect: boolean;
-}
-
-export interface ExamHistoryAnswer {
-  key: string;
-  answer: string;
-}
-
-export interface ExamHistory {
-  exams: ExamHistoryItem[];
+  answers: Array<{ key: string; answer: string; }>;
 }
