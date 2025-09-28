@@ -40,7 +40,7 @@ export class ExamResultModalComponent implements OnInit {
   }
 
   get canGoNext(): boolean {
-    if (!this.examResult) return false;
+    if (!this.examResult || !this.examResult.questions) return false;
     return this.currentQuestionIndex < this.examResult.questions.length - 1;
   }
 
@@ -61,7 +61,7 @@ export class ExamResultModalComponent implements OnInit {
   }
 
   goToQuestion(index: number): void {
-    if (this.examResult && index >= 0 && index < this.examResult.questions.length) {
+    if (this.examResult && this.examResult.questions && index >= 0 && index < this.examResult.questions.length) {
       this.currentQuestionIndex = index;
     }
   }

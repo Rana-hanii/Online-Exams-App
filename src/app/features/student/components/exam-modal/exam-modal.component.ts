@@ -92,13 +92,13 @@ export class ExamModalComponent implements OnInit, OnDestroy {
       this.store.dispatch(loadQuestionsByExam({ examId: this.examId }));
       
       // Get exam details for history
-      this.examService.getExamById(this.examId).subscribe(exam => {
+      this.examService.getExamById(this.examId).subscribe((exam: any) => {
         this.examTitle = exam.title;
         this.subjectName = exam.subject;
       });
     }
 
-    this.questions$.pipe(takeUntil(this.destroy$)).subscribe((qs) => {
+    this.questions$.pipe(takeUntil(this.destroy$)).subscribe((qs: Question[]) => {
       this.questions = qs ?? [];
       if (this.currentIndex >= this.questions.length) {
         this.currentIndex = Math.max(0, this.questions.length - 1);
@@ -111,7 +111,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
       this.scorePercent$,
       this.correctCount$,
       this.incorrectCount$
-    ]).pipe(takeUntil(this.destroy$)).subscribe(([showResults, scorePercent, correctCount, incorrectCount]) => {
+    ]).pipe(takeUntil(this.destroy$)).subscribe(([showResults, scorePercent, correctCount, incorrectCount]: [boolean, number, number, number]) => {
       if (showResults && scorePercent !== undefined) {
         this.saveExamResultToLocalStorage(scorePercent, correctCount, incorrectCount);
       }
@@ -269,7 +269,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     redDash: string;
     redOffset: number;
   }> = combineLatest([this.correctCount$, this.incorrectCount$]).pipe(
-    map(([correct, wrong]) => {
+    map(([correct, wrong]: [number, number]) => {
       const total = Math.max(1, Number(correct || 0) + Number(wrong || 0));
       const correctLen = this.circumference * (Number(correct || 0) / total);
       const wrongLen = this.circumference * (Number(wrong || 0) / total);

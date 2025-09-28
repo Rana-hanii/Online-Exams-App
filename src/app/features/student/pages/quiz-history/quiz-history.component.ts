@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ExamHistoryItem } from '../../../../shared/interfaces/exam.interface';
+import { ExamResultHandlerService } from '../../../../shared/utils/exam-result-handler.service';
 import * as ExamsActions from '../../../../store/exams/exams.actions';
 import { 
   selectExamHistory, 
@@ -20,6 +21,7 @@ import {
 })
 export class QuizHistoryComponent implements OnInit {
   private store = inject(Store);
+  private examResultHandler = inject(ExamResultHandlerService);
 
   examHistory$: Observable<ExamHistoryItem[]> = this.store.select(selectExamHistory);
   loading$: Observable<boolean> = this.store.select(selectExamsLoading);
@@ -30,6 +32,19 @@ export class QuizHistoryComponent implements OnInit {
   ngOnInit(): void {
     // Load exam history from local storage on component init
     this.store.dispatch(ExamsActions.loadExamHistory());
+    
+    // إضافة بيانات وهمية للتجربة (يمكن حذف هذا السطر لاحقاً)
+    this.addSampleDataIfEmpty();
+  }
+
+  //* إضافة بيانات وهمية للتجربة إذا كان التاريخ فارغ
+  private addSampleDataIfEmpty(): void {
+    this.examHistory$.subscribe(history => {
+      if (history.length === 0) {
+        console.log('إضافة بيانات وهمية للتجربة...');
+        this.examResultHandler.createSampleExamHistory();
+      }
+    }).unsubscribe(); // unsubscribe فوراً لأننا نريد فقط فحص واحد
   }
 
   //* Open modal to view exam details
@@ -81,5 +96,10 @@ export class QuizHistoryComponent implements OnInit {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
     return `${hours} ساعة ${remainingMinutes > 0 ? `${remainingMinutes} دقيقة` : ''}`;
+  }
+
+  //* Track by function for ngFor
+  trackByExamId(index: number, exam: ExamHistoryItem): string {
+    return exam._id;
   }
 }

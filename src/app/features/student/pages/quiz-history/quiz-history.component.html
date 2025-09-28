@@ -1,55 +1,155 @@
 <!--^ Quizes History -->
-
 <div class="py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full">
     <div class="flex justify-between items-center my-4 text-main font-semibold">
-        <span>Quiz History</span>
-        <button 
-            *ngIf="examHistory.length > 0" 
-            (click)="clearHistory()" 
-            class="text-red-500 text-sm px-3 py-1 border border-red-500 rounded-lg hover:bg-red-50 transition-all duration-300">
-            Clear History
-        </button>
+        <span>تاريخ الامتحانات</span>
     </div>
-    
-    <div class="flex flex-col items-start px-2 py-6 lg:h-[75vh] lg:overflow-y-auto">
-        <!-- ^ No History Message -->
-        <div *ngIf="examHistory.length === 0" class="w-full text-center py-12">
-            <img class="w-24 mx-auto mb-4 opacity-50" src="imags/icon-test.png" alt="no-history">
-            <h3 class="text-gray-500 text-lg mb-2">No exam history yet</h3>
-            <p class="text-gray-400 text-sm">Complete some exams to see your history here</p>
-        </div>
 
-        <!-- ^ Quiz History Items -->
-        <div 
-            *ngFor="let examResult of examHistory" 
-            class="lg:px-16 px-8 py-6 my-4 flex justify-between items-center rounded-3xl shadow-lg w-full hover:shadow-xl transition-all duration-300 cursor-pointer"
-            (click)="viewExamDetails(examResult)">
+    <!-- Loading State -->
+    <div *ngIf="loading$ | async" class="flex justify-center items-center py-8">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-main"></div>
+        <span class="mr-3 text-gray-600">جاري تحميل التاريخ...</span>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error$ | async as error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        {{ error }}
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="(examHistory$ | async)?.length === 0 && !(loading$ | async)" 
+         class="flex flex-col items-center justify-center py-12">
+        <img class="w-24 mb-4 opacity-50" src="imags/icon-test.png" alt="no-exams">
+        <h3 class="text-gray-500 text-lg font-semibold mb-2">لا يوجد تاريخ امتحانات</h3>
+        <p class="text-gray-400 text-sm">لم تقم بأداء أي امتحان بعد</p>
+    </div>
+
+    <!-- Exam History List -->
+    <div class="flex flex-col items-start px-2 py-6 lg:h-[75vh] lg:overflow-y-auto">
+        <div *ngFor="let examResult of examHistory$ | async; trackBy: trackByExamId" 
+             class="lg:px-16 px-8 py-6 my-4 flex justify-between items-center rounded-3xl shadow-lg w-full hover:shadow-xl transition-all duration-300">
             
             <div class="flex items-center justify-center">
                 <img class="w-16 me-4" src="imags/icon-test-h.png" alt="test-icon">
                 <div class="font-semibold">
-                    <h4 class="text-black text-lg">{{ examResult.examTitle }}</h4>
-                    <span class="text-gray-500 text-xs">{{ examResult.subjectName }} • {{ examResult.totalQuestions }} Questions</span>
-                    <div class="mt-2 flex items-center gap-4">
-                        <span class="text-xs" [ngClass]="getScoreColor(examResult.score)">
-                            {{ examResult.correctAnswers }}/{{ examResult.totalQuestions }} correct ({{ examResult.score }}%)
+                    <h4 class="text-black text-lg">{{ examResult.exam.title }}</h4>
+                    <span class="text-gray-500 text-xs">{{ examResult.totalQuestions }} سؤال</span>
+                    <div class="flex items-center mt-2">
+                        <span [class]="getScoreColor(getScorePercentage(examResult.correctAnswers, examResult.totalQuestions))" 
+                              class="text-xs font-medium">
+                            {{ examResult.correctAnswers }}/{{ examResult.totalQuestions }} 
+                            ({{ getScorePercentage(examResult.correctAnswers, examResult.totalQuestions) }}%)
                         </span>
-                        <span class="text-gray-400 text-xs">{{ formatTimeSpent(examResult.timeSpent) }}</span>
+                        <span class="text-gray-400 text-xs mr-3">
+                            في {{ formatTimeSpent(examResult.timeSpent) }}
+                        </span>
                     </div>
-                    <span class="text-gray-400 text-xs block mt-1">{{ formatDate(examResult.completedAt) }}</span>
+                    <span class="text-gray-400 text-xs block mt-1">
+                        {{ formatDate(examResult.completedAt) }}
+                    </span>
                 </div>
             </div>
-            
+
             <div class="flex flex-col items-center justify-center">
-                <div class="text-center mb-3">
-                    <div class="text-2xl font-bold" [ngClass]="getScoreColor(examResult.score)">
-                        {{ examResult.score }}%
-                    </div>
-                    <div class="text-xs text-gray-500">Score</div>
-                </div>
-                <button class="bg-main text-white px-4 py-2 rounded-2xl btn-shadow transition-all duration-500 hover:bg-blue-600">
-                    View Details
+                <span class="text-black font-semibold text-xs mb-3">
+                    {{ formatDuration(examResult.exam.duration) }}
+                </span>
+                <button 
+                    (click)="viewExamDetails(examResult)"
+                    class="bg-main text-white px-4 py-2 rounded-2xl btn-shadow transition-all duration-500 hover:bg-opacity-90">
+                    عرض الإجابات
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- History Modal -->
+<div *ngIf="historyModalOpen$ | async" 
+     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+     (click)="onCloseModal()">
+    <div class="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-y-auto m-4 p-6"
+         (click)="$event.stopPropagation()">
+        
+        <div *ngIf="selectedHistoryExam$ | async as selectedExam" class="space-y-4">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center border-b pb-4">
+                <h2 class="text-xl font-bold text-main">{{ selectedExam.exam.title }}</h2>
+                <button 
+                    (click)="onCloseModal()"
+                    class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+
+            <!-- Exam Summary -->
+            <div class="bg-gray-50 rounded-lg p-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div>
+                        <div class="text-2xl font-bold text-main">{{ selectedExam.correctAnswers }}</div>
+                        <div class="text-sm text-gray-600">إجابات صحيحة</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-red-500">{{ selectedExam.wrongAnswers }}</div>
+                        <div class="text-sm text-gray-600">إجابات خاطئة</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-blue-500">
+                            {{ getScorePercentage(selectedExam.correctAnswers, selectedExam.totalQuestions) }}%
+                        </div>
+                        <div class="text-sm text-gray-600">النسبة المئوية</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-purple-500">{{ formatTimeSpent(selectedExam.timeSpent) }}</div>
+                        <div class="text-sm text-gray-600">الوقت المستغرق</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions Details -->
+            <div *ngIf="selectedExam.questions && selectedExam.questions.length > 0" class="space-y-4">
+                <h3 class="text-lg font-semibold text-gray-800">تفاصيل الأسئلة:</h3>
+                
+                <div *ngFor="let question of selectedExam.questions; let i = index" 
+                     class="border rounded-lg p-4"
+                     [class.bg-green-50]="question.isCorrect"
+                     [class.bg-red-50]="!question.isCorrect">
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-semibold"
+                             [class.bg-green-500]="question.isCorrect"
+                             [class.bg-red-500]="!question.isCorrect">
+                            {{ i + 1 }}
+                        </div>
+                        
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-800 mb-2">{{ question.question }}</p>
+                            
+                            <div class="space-y-2">
+                                <div *ngFor="let answer of question.answers" 
+                                     class="p-2 rounded border"
+                                     [class.bg-green-200]="answer.key === question.correctAnswer"
+                                     [class.bg-red-200]="answer.key === question.userAnswer && answer.key !== question.correctAnswer"
+                                     [class.border-green-400]="answer.key === question.correctAnswer"
+                                     [class.border-red-400]="answer.key === question.userAnswer && answer.key !== question.correctAnswer">
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <span class="font-semibold">{{ answer.key }})</span>
+                                        <span>{{ answer.answer }}</span>
+                                        
+                                        <span *ngIf="answer.key === question.correctAnswer" 
+                                              class="text-green-600 text-sm">✓ الإجابة الصحيحة</span>
+                                        <span *ngIf="answer.key === question.userAnswer && answer.key !== question.correctAnswer" 
+                                              class="text-red-600 text-sm">✗ إجابتك</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- No Questions Message -->
+            <div *ngIf="!selectedExam.questions || selectedExam.questions.length === 0" 
+                 class="text-center py-8">
+                <p class="text-gray-500">تفاصيل الأسئلة غير متوفرة لهذا الامتحان</p>
             </div>
         </div>
     </div>
