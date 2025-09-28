@@ -65,4 +65,35 @@ export const selectHasExamsError = createSelector(
   (error) => !!error
 );
 
+//* Exam History Selectors
+export const selectExamHistory = createSelector(
+  selectExamsState,
+  (state: ExamState) => state.examHistory
+);
+
+export const selectSelectedHistoryExam = createSelector(
+  selectExamsState,
+  (state: ExamState) => state.selectedHistoryExam
+);
+
+export const selectHistoryModalOpen = createSelector(
+  selectExamsState,
+  (state: ExamState) => state.historyModalOpen
+);
+
+export const selectExamHistoryCount = createSelector(
+  selectExamHistory,
+  (history) => history.length
+);
+
+export const selectHistoryExamById = (id: string) => createSelector(
+  selectExamHistory,
+  (history) => history.find(exam => exam._id === id)
+);
+
+export const selectRecentExamHistory = (limit: number = 10) => createSelector(
+  selectExamHistory,
+  (history) => history.slice(0, limit)
+);
+
 

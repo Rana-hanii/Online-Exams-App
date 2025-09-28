@@ -6,9 +6,12 @@ export const examsFeatureKey = 'exams';
 
 export const initialState: ExamState = {
   exams: [],
+  examHistory: [],
   loading: false,
   error: null,
   selectedExam: null,
+  selectedHistoryExam: null,
+  historyModalOpen: false,
 };
 
 export const examsReducer = createReducer(
@@ -107,5 +110,52 @@ export const examsReducer = createReducer(
   on(ExamsActions.clearSelectedExam, (state) => ({
     ...state,
     selectedExam: null,
+  })),
+
+  //* Load Exam History
+  on(ExamsActions.loadExamHistory, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(ExamsActions.loadExamHistorySuccess, (state, { history }) => ({
+    ...state,
+    examHistory: history,
+    loading: false,
+    error: null,
+  })),
+
+  on(ExamsActions.loadExamHistoryFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+
+  //* Save Exam Result
+  on(ExamsActions.saveExamResult, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+
+  on(ExamsActions.saveExamResultSuccess, (state, { examResult }) => ({
+    ...state,
+    examHistory: [examResult, ...state.examHistory],
+    loading: false,
+    error: null,
+  })),
+
+  //* History Modal
+  on(ExamsActions.openHistoryModal, (state, { examHistory }) => ({
+    ...state,
+    selectedHistoryExam: examHistory,
+    historyModalOpen: true,
+  })),
+
+  on(ExamsActions.closeHistoryModal, (state) => ({
+    ...state,
+    selectedHistoryExam: null,
+    historyModalOpen: false,
   }))
 );

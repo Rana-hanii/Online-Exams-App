@@ -15,6 +15,8 @@ import {
 
 import { Question } from '../../../../shared/interfaces/question.interface';
 import { AppState } from '../../../../store/app.state';
+import { ExamService } from '../../services/exam.service';
+import { ExamHistoryItem, ExamHistoryQuestion } from '../../../../shared/interfaces/exam.interface';
 import {
   checkQuestions,
   closeQuestionModal,
@@ -54,8 +56,11 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   store = inject(Store<AppState>);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  examService = inject(ExamService);
 
   examId = '';
+  examTitle = '';
+  subjectName = '';
   //*  Store
   questionModalOpen$: Observable<boolean> = this.store.select(selectQuestionModalOpen);
   questions$: Observable<Question[]> = this.store.select(selectAllQuestions);
@@ -85,12 +90,30 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     if (this.examId) {
       this.store.dispatch(openQuestionModal({ examId: this.examId }));
       this.store.dispatch(loadQuestionsByExam({ examId: this.examId }));
+      
+      // Get exam details for history
+      this.examService.getExamById(this.examId).subscribe(exam => {
+        this.examTitle = exam.title;
+        this.subjectName = exam.subject;
+      });
     }
 
     this.questions$.pipe(takeUntil(this.destroy$)).subscribe((qs) => {
       this.questions = qs ?? [];
       if (this.currentIndex >= this.questions.length) {
         this.currentIndex = Math.max(0, this.questions.length - 1);
+      }
+    });
+
+    // Listen to check results to save to local storage
+    combineLatest([
+      this.showResults$,
+      this.scorePercent$,
+      this.correctCount$,
+      this.incorrectCount$
+    ]).pipe(takeUntil(this.destroy$)).subscribe(([showResults, scorePercent, correctCount, incorrectCount]) => {
+      if (showResults && scorePercent !== undefined) {
+        this.saveExamResultToLocalStorage(scorePercent, correctCount, incorrectCount);
       }
     });
 
@@ -257,4 +280,45 @@ export class ExamModalComponent implements OnInit, OnDestroy {
       };
     })
   );
+
+  //* Save exam result to local storage
+  private saveExamResultToLocalStorage(scorePercent: number, correctCount: number, incorrectCount: number): void {
+    if (!this.examId || !this.examTitle || this.questions.length === 0) return;
+
+    const examHistoryItem: ExamHistoryItem = {
+      _id: this.generateUniqueId(),
+      examId: this.examId,
+      examTitle: this.examTitle,
+      subjectName: this.subjectName || 'Unknown Subject',
+      totalQuestions: this.questions.length,
+      correctAnswers: correctCount,
+      wrongAnswers: incorrectCount,
+      score: Math.round(scorePercent),
+      timeSpent: this.durationMinutes * 60 - this.secondsLeft,
+      completedAt: new Date().toISOString(),
+      questions: this.mapQuestionsToHistory()
+    };
+
+    this.examService.saveExamResultToLocalStorage(examHistoryItem);
+  }
+
+  //* Map current questions to history format
+  private mapQuestionsToHistory(): ExamHistoryQuestion[] {
+    return this.questions.map(question => ({
+      questionId: question._id,
+      question: question.question,
+      answers: question.answers.map(answer => ({
+        key: answer.key,
+        answer: answer.answer
+      })),
+      correctAnswer: question.correct,
+      userAnswer: this.selections[question._id] || '',
+      isCorrect: this.selections[question._id] === question.correct
+    }));
+  }
+
+  //* Generate unique ID for exam result
+  private generateUniqueId(): string {
+    return `exam_result_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
 }

@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { ExamService } from '../../features/student/services/exam.service';
-import { Exam, Exams } from '../../shared/interfaces/exam.interface';
+import { Exam, Exams, ExamHistoryResponse } from '../../shared/interfaces/exam.interface';
 import * as ExamsActions from './exams.actions';
 
 @Injectable()
@@ -100,6 +100,40 @@ export class ExamsEffects {
             )
           )
         )
+      )
+  );
+
+  //^ Load Exam History
+  loadExamHistory$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ExamsActions.loadExamHistory),
+        switchMap(() =>
+          this.examService.getExamHistoryObservable().pipe(
+            tap((history) => console.log('exam history from localStorage', history)),
+            map((history) => ExamsActions.loadExamHistorySuccess({ history })),
+            catchError((error) =>
+              of(
+                ExamsActions.loadExamHistoryFailure({
+                  error: error.message || 'Failed to load exam history',
+                })
+              )
+            )
+          )
+        )
+      )
+  );
+
+  //^ Save Exam Result
+  saveExamResult$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ExamsActions.saveExamResult),
+        tap(({ examResult }) => {
+          this.examService.saveExamResultToLocalStorage(examResult);
+          console.log('exam result saved to localStorage', examResult);
+        }),
+        map(({ examResult }) => ExamsActions.saveExamResultSuccess({ examResult }))
       )
   );
 }

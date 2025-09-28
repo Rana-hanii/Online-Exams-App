@@ -1,0 +1,126 @@
+<p-dialog 
+  [(visible)]="showModal" 
+  [modal]="true" 
+  [closable]="false"
+  [style]="{ width: '90vw', maxWidth: '1000px', height: '90vh' }"
+  styleClass="exam-result-modal">
+  
+  <div *ngIf="examResult" class="h-full flex flex-col">
+    <!-- Header -->
+    <div class="border-b pb-4 mb-4">
+      <div class="flex justify-between items-start">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ examResult.examTitle }}</h2>
+          <div class="flex items-center gap-4 text-sm text-gray-600">
+            <span>{{ examResult.subjectName }}</span>
+            <span>•</span>
+            <span>{{ examResult.totalQuestions }} Questions</span>
+            <span>•</span>
+            <span>{{ formatTimeSpent(examResult.timeSpent) }}</span>
+            <span>•</span>
+            <span>{{ formatDate(examResult.completedAt) }}</span>
+          </div>
+        </div>
+        <button 
+          (click)="closeModal()" 
+          class="text-gray-500 hover:text-gray-700 text-2xl font-bold">
+          ×
+        </button>
+      </div>
+      
+      <!-- Score Summary -->
+      <div class="mt-4 grid grid-cols-4 gap-4">
+        <div class="text-center p-3 bg-blue-50 rounded-lg">
+          <div class="text-2xl font-bold text-blue-600">{{ examResult.score }}%</div>
+          <div class="text-sm text-gray-600">Score</div>
+        </div>
+        <div class="text-center p-3 bg-green-50 rounded-lg">
+          <div class="text-2xl font-bold text-green-600">{{ examResult.correctAnswers }}</div>
+          <div class="text-sm text-gray-600">Correct</div>
+        </div>
+        <div class="text-center p-3 bg-red-50 rounded-lg">
+          <div class="text-2xl font-bold text-red-600">{{ examResult.wrongAnswers }}</div>
+          <div class="text-sm text-gray-600">Wrong</div>
+        </div>
+        <div class="text-center p-3 bg-gray-50 rounded-lg">
+          <div class="text-2xl font-bold text-gray-600">{{ examResult.totalQuestions }}</div>
+          <div class="text-sm text-gray-600">Total</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Progress -->
+    <div class="mb-4">
+      <div class="flex flex-wrap gap-2">
+        <button 
+          *ngFor="let question of examResult.questions; let i = index"
+          (click)="goToQuestion(i)"
+          class="w-8 h-8 rounded-full text-sm font-medium transition-all duration-200"
+          [ngClass]="getQuestionProgressClass(i, question)">
+          {{ i + 1 }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Current Question -->
+    <div *ngIf="currentQuestion" class="flex-1 overflow-y-auto">
+      <div class="bg-gray-50 p-4 rounded-lg mb-4">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-lg font-semibold">Question {{ currentQuestionIndex + 1 }} of {{ examResult.questions.length }}</h3>
+          <span class="px-3 py-1 rounded-full text-sm font-medium"
+                [ngClass]="currentQuestion.isCorrect ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+            {{ currentQuestion.isCorrect ? 'Correct' : 'Incorrect' }}
+          </span>
+        </div>
+        <p class="text-gray-800 mb-4">{{ currentQuestion.question }}</p>
+        
+        <!-- Answer Options -->
+        <div class="space-y-2">
+          <div 
+            *ngFor="let answer of currentQuestion.answers"
+            class="p-3 rounded-lg border-2 transition-all duration-200"
+            [ngClass]="getAnswerClass(answer, currentQuestion)">
+            <div class="flex items-center justify-between">
+              <span>{{ answer.key }}. {{ answer.answer }}</span>
+              <div class="flex gap-2">
+                <span *ngIf="answer.key === currentQuestion.correctAnswer" 
+                      class="px-2 py-1 bg-green-600 text-white text-xs rounded">
+                  Correct
+                </span>
+                <span *ngIf="answer.key === currentQuestion.userAnswer && answer.key !== currentQuestion.correctAnswer" 
+                      class="px-2 py-1 bg-red-600 text-white text-xs rounded">
+                  Your Choice
+                </span>
+                <span *ngIf="answer.key === currentQuestion.userAnswer && answer.key === currentQuestion.correctAnswer" 
+                      class="px-2 py-1 bg-green-600 text-white text-xs rounded">
+                  Your Correct Choice
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex justify-between items-center pt-4 border-t">
+      <button 
+        (click)="previousQuestion()"
+        [disabled]="!canGoPrevious"
+        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
+        Previous
+      </button>
+      
+      <div class="text-sm text-gray-600">
+        {{ currentQuestionIndex + 1 }} / {{ examResult?.questions.length }}
+      </div>
+      
+      <button 
+        (click)="nextQuestion()"
+        [disabled]="!canGoNext"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
+        Next
+      </button>
+    </div>
+  </div>
+</p-dialog>

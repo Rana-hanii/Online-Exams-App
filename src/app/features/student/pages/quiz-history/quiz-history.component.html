@@ -1,24 +1,55 @@
 <!--^ Quizes History -->
 
-<div class="  py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full ">
-    <div class="flex justify-between items-center my-4 text-main font-semibold ">
-        <span>Quizes</span>
+<div class="py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full">
+    <div class="flex justify-between items-center my-4 text-main font-semibold">
+        <span>Quiz History</span>
+        <button 
+            *ngIf="examHistory.length > 0" 
+            (click)="clearHistory()" 
+            class="text-red-500 text-sm px-3 py-1 border border-red-500 rounded-lg hover:bg-red-50 transition-all duration-300">
+            Clear History
+        </button>
     </div>
+    
     <div class="flex flex-col items-start px-2 py-6 lg:h-[75vh] lg:overflow-y-auto">
-        <!-- ^ Quiz -->
-        <div class="lg:px-16 px-8 py-6  my-4 flex justify-between items-center rounded-3xl shadow-lg w-full">
-            <div class="flex  items-center justify-center">
+        <!-- ^ No History Message -->
+        <div *ngIf="examHistory.length === 0" class="w-full text-center py-12">
+            <img class="w-24 mx-auto mb-4 opacity-50" src="imags/icon-test.png" alt="no-history">
+            <h3 class="text-gray-500 text-lg mb-2">No exam history yet</h3>
+            <p class="text-gray-400 text-sm">Complete some exams to see your history here</p>
+        </div>
+
+        <!-- ^ Quiz History Items -->
+        <div 
+            *ngFor="let examResult of examHistory" 
+            class="lg:px-16 px-8 py-6 my-4 flex justify-between items-center rounded-3xl shadow-lg w-full hover:shadow-xl transition-all duration-300 cursor-pointer"
+            (click)="viewExamDetails(examResult)">
+            
+            <div class="flex items-center justify-center">
                 <img class="w-16 me-4" src="imags/icon-test-h.png" alt="test-icon">
                 <div class="font-semibold">
-                    <h4 class="text-black text-lg">HTML</h4>
-                    <span class="text-gray-500 text-xs">20 Questions </span>
-                    <span class="text-main text-xs mt-3 block">18 corrected answers in 11 minutes.  </span>
+                    <h4 class="text-black text-lg">{{ examResult.examTitle }}</h4>
+                    <span class="text-gray-500 text-xs">{{ examResult.subjectName }} • {{ examResult.totalQuestions }} Questions</span>
+                    <div class="mt-2 flex items-center gap-4">
+                        <span class="text-xs" [ngClass]="getScoreColor(examResult.score)">
+                            {{ examResult.correctAnswers }}/{{ examResult.totalQuestions }} correct ({{ examResult.score }}%)
+                        </span>
+                        <span class="text-gray-400 text-xs">{{ formatTimeSpent(examResult.timeSpent) }}</span>
+                    </div>
+                    <span class="text-gray-400 text-xs block mt-1">{{ formatDate(examResult.completedAt) }}</span>
                 </div>
-                
             </div>
+            
             <div class="flex flex-col items-center justify-center">
-                <span class="text-black font-semibold text-xs mb-3">15 Minutes</span>
-                <button class="bg-main px-4 py-2 rounded-2xl  btn-shadow transition-all duration-500">answers</button>
+                <div class="text-center mb-3">
+                    <div class="text-2xl font-bold" [ngClass]="getScoreColor(examResult.score)">
+                        {{ examResult.score }}%
+                    </div>
+                    <div class="text-xs text-gray-500">Score</div>
+                </div>
+                <button class="bg-main text-white px-4 py-2 rounded-2xl btn-shadow transition-all duration-500 hover:bg-blue-600">
+                    View Details
+                </button>
             </div>
         </div>
     </div>

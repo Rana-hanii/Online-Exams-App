@@ -12,6 +12,7 @@ export const API_ENDPOINTS = {
     byId: (id: string) => `/exams/${id}`, //* get exam by id
     onSubject: (subjectId: string) => `/exams?subject=${subjectId}`, //* get all exams on subject by sub ID
     add: `/exams`, //* add new exam
+    history: `/exams/history`, //* get user exam history
   },
 
   questions: {

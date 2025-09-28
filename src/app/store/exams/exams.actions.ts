@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Exam } from '../../shared/interfaces/exam.interface';
+import { Exam, ExamHistoryResponse, ExamHistoryItem } from '../../shared/interfaces/exam.interface';
 
 //^ Load Exams Actions
 export const loadExams = createAction('[Exams] Load Exams');
@@ -65,3 +65,34 @@ export const addExamFailure = createAction(
 //^ Clear Actions
 export const clearExams = createAction('[Exams] Clear Exams');
 export const clearSelectedExam = createAction('[Exams] Clear Selected Exam');
+
+//^ Exam History Actions
+export const loadExamHistory = createAction('[Exams] Load Exam History');
+
+export const loadExamHistorySuccess = createAction(
+  '[Exams] Load Exam History Success',
+  props<{ history: ExamHistoryItem[] }>()
+);
+
+export const loadExamHistoryFailure = createAction(
+  '[Exams] Load Exam History Failure',
+  props<{ error: string }>()
+);
+
+export const saveExamResult = createAction(
+  '[Exams] Save Exam Result',
+  props<{ examResult: ExamHistoryItem }>()
+);
+
+export const saveExamResultSuccess = createAction(
+  '[Exams] Save Exam Result Success',
+  props<{ examResult: ExamHistoryItem }>()
+);
+
+//^ History Modal Actions
+export const openHistoryModal = createAction(
+  '[Exams] Open History Modal',
+  props<{ examHistory: ExamHistoryItem }>()
+);
+
+export const closeHistoryModal = createAction('[Exams] Close History Modal');

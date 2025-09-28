@@ -31,6 +31,11 @@ export const STUDENT_ROUTES: Routes = [
         loadComponent: () =>
           import('../../features/student/pages/quiz-history/quiz-history.component').then((m) => m.QuizHistoryComponent),
       },
+      {
+        path: 'exam-result/:id',
+        loadComponent: () =>
+          import('../../features/student/components/exam-result-modal/exam-result-modal.component').then((m) => m.ExamResultModalComponent),
+      },
     ],
   },
 ];
