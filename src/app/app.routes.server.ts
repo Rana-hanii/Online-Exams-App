@@ -6,6 +6,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server   
   },
   {
+    path: 'student/exams/:subjectId',
+    renderMode: RenderMode.Server   
+  },
+  {
     path: '**',
     renderMode: RenderMode.Prerender
   }
