@@ -10,10 +10,14 @@ import {
   combineLatest,
   interval,
   map,
+  take,
   takeUntil,
 } from 'rxjs';
 
-import { Question } from '../../../../shared/interfaces/question.interface';
+import {
+  History,
+  Question,
+} from '../../../../shared/interfaces/question.interface';
 import { AppState } from '../../../../store/app.state';
 import {
   checkQuestions,
@@ -27,6 +31,7 @@ import {
   selectCorrectCount,
   selectIncorrectCount,
   selectQuestionModalOpen,
+  selectQuestionsHistory,
   selectQuestionsLoading,
   selectScorePercent,
 } from '../../../../store/questions/questions.selectors';
@@ -34,6 +39,8 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { selectExamById } from '../../../../store/exams';
+import { Exam } from '../../../../shared/interfaces/exam.interface';
 
 @Component({
   selector: 'app-exam-modal',
@@ -56,14 +63,21 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   router = inject(Router);
 
   examId = '';
+  examTitle = '';
+  subjectName = '';
   //*  Store
-  questionModalOpen$: Observable<boolean> = this.store.select(selectQuestionModalOpen);
+  questionModalOpen$: Observable<boolean> = this.store.select(
+    selectQuestionModalOpen
+  );
   questions$: Observable<Question[]> = this.store.select(selectAllQuestions);
   loading$: Observable<boolean> = this.store.select(selectQuestionsLoading);
   showResults$: Observable<boolean> = this.store.select(selectCheckResult);
   scorePercent$: Observable<number> = this.store.select(selectScorePercent);
   correctCount$: Observable<number> = this.store.select(selectCorrectCount);
   incorrectCount$: Observable<number> = this.store.select(selectIncorrectCount);
+  questionsHistory$: Observable<History[]> = this.store
+    .select(selectQuestionsHistory)
+    .pipe(map((history) => (Array.isArray(history) ? history : [])));
 
   //* review mode: after submit and clicking Show Results
   reviewMode = false;
@@ -80,11 +94,26 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   //* Subscription for timer
   private tickSub?: Subscription;
 
+  isReviewFromHistory = false;
+
   ngOnInit(): void {
     this.examId = this.route.snapshot.paramMap.get('examId') || '';
+
     if (this.examId) {
+      //^ open modal and load questions
       this.store.dispatch(openQuestionModal({ examId: this.examId }));
       this.store.dispatch(loadQuestionsByExam({ examId: this.examId }));
+
+      //^ get exam details from store
+      this.store
+        .select(selectExamById(this.examId))
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((exam: Exam | undefined) => {
+          if (exam) {
+            this.examTitle = exam.title;
+            this.subjectName = exam.subject;
+          }
+        });
     }
 
     this.questions$.pipe(takeUntil(this.destroy$)).subscribe((qs) => {
@@ -93,6 +122,25 @@ export class ExamModalComponent implements OnInit, OnDestroy {
         this.currentIndex = Math.max(0, this.questions.length - 1);
       }
     });
+    //^ save result when ready
+    combineLatest([
+      this.showResults$,
+      this.scorePercent$,
+      this.correctCount$,
+      this.incorrectCount$,
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        ([showResults, scorePercent, correctCount, incorrectCount]) => {
+          if (showResults && scorePercent !== undefined) {
+            this.saveExamResultToLocalStorage(
+              scorePercent,
+              correctCount,
+              incorrectCount
+            );
+          }
+        }
+      );
 
     this.startTimer();
   }
@@ -101,6 +149,40 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.tickSub?.unsubscribe();
+  }
+  private saveExamResultToLocalStorage(
+    scorePercent: number,
+    correctCount: number,
+    incorrectCount: number
+  ): void {
+    const history = JSON.parse(localStorage.getItem('examHistory') || '[]');
+       let detailedAnswers: any[] = [];
+    this.questionsHistory$.pipe(take(1)).subscribe((res) => {
+      detailedAnswers = res || [];
+    });
+
+    const newResult = {
+      examId: this.examId,
+      title: this.examTitle,
+      subject: this.subjectName,
+      scorePercent,
+      correctCount,
+      incorrectCount,
+      total: this.questions.length,
+      date: new Date().toISOString(),
+      answers: detailedAnswers,
+    };
+
+    const existingIndex = history.findIndex(
+      (h: any) => h.examId === this.examId
+    );
+    if (existingIndex !== -1) {
+      history[existingIndex] = newResult;
+    } else {
+      history.push(newResult);
+    }
+
+    localStorage.setItem('examHistory', JSON.stringify(history));
   }
 
   //* Exam Questions >> Timer
