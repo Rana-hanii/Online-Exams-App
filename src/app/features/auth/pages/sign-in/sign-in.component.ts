@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,13 +7,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthApiService } from 'auth-api';
+import { AdaptedSignInRes, AuthApiService } from 'auth-api';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthTokenService } from '../../../../core/services/auth-token.service';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 
@@ -33,7 +34,9 @@ import { DividerAndIconsComponent } from '../../components/divider-and-icons/div
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
 })
-export class SignInComponent {
+export class SignInComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+  
   messageService = inject(MessageService);
   _AuthApiService = inject(AuthApiService);
   private router = inject(Router);
@@ -64,24 +67,11 @@ export class SignInComponent {
       return;
     }
     this.isSubmitting = true;
-    this._AuthApiService.SignIn(this.signInForm.value).subscribe({
-      next: (res: any) => {
-        // Check if the response is an error (from catchError of(err))
-        if (res && res.status && res.status >= 400) {
-          // This is an error response
-          console.error('Sign in error:', res);
-          const errorMessage = res.error?.message || res.message || 'An error occurred during sign in';
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: errorMessage,
-            life: 8000,
-          });
-          this.isSubmitting = false;
-          this.formSubmitted = false;
-          this.signInForm.reset();
-        } else {
-          // This is a success response
+    this._AuthApiService.SignIn(this.signInForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: AdaptedSignInRes) => {
+          // Success response
           this.authTokenService.setToken(res.token);
           console.log('Sign in success:', res);
           this.messageService.add({
@@ -92,15 +82,32 @@ export class SignInComponent {
           });
           setTimeout(() => {
             this.router.navigate(['/student/dashboard']);
-          }, 9000);
+          }, 5000);
+        },
+        error: (error) => {
+          // Error response
+          console.error('Sign in error:', error);
+          const errorMessage = error.error?.message || error.message || 'An error occurred during sign in';
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: errorMessage,
+            life: 8000,
+          });
+          this.isSubmitting = false;
+          this.formSubmitted = false;
+          this.signInForm.reset();
         }
-      },
-      
-    });
+      });
   }
 
   isInvalid(controlName: string) {
     const control = this.signInForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

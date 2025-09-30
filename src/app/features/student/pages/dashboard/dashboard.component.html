@@ -13,7 +13,7 @@
             @if (error$ | async) {
                 <div class="w-full text-red-600 text-center py-3">{{ error$ | async }}</div>
             }
-            @for (subject of ((subjects$ | async) ?? []); track subject._id) {
+            @for (subject of (subjects$ | async) || []; track subject._id) {
                 <div class="col-span-1 w-[350px] h-[350px] mx-auto md:h-[250px] md:w-[250px] xl:w-[235px] xl:h-[250px] 2xl:w-[400px] 2xl:h-[340px] rounded-xl overflow-hidden relative shadow-2xl cursor-pointer  transition-all duration-200 "
                     [routerLink]="['../exams', subject._id]">
                     <img src="{{subject.icon}}" class="object-cover w-full h-full hover:scale-105 transition-all duration-200" alt=""> 

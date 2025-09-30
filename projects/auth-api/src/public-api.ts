@@ -35,5 +35,13 @@ export * from './lib/enums/AuthEndPoint';
 //! Adapters
 export * from './lib/adaptor/auth-api.adaptor';
 
+//! Adapted Response Interfaces
+export * from './lib/interfaces/adaptor/AdaptedForgetPasswordRes';
+export * from './lib/interfaces/adaptor/AdaptedLogOutRes';
+export * from './lib/interfaces/adaptor/AdaptedResetPasswordRes';
+export * from './lib/interfaces/adaptor/AdaptedSignInRes';
+export * from './lib/interfaces/adaptor/AdaptedSignUpRes';
+export * from './lib/interfaces/adaptor/AdaptedVerifyCodeRes';
+
 
 

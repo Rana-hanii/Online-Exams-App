@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,13 +7,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthApiService } from 'auth-api';
+import { AdaptedForgetPasswordRes, AuthApiService } from 'auth-api';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
+import { Subject, takeUntil } from 'rxjs';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
+import { PasswordResetService } from '../../services/password-reset.service';
 
 @Component({
   selector: 'app-forget-password',
@@ -30,10 +32,13 @@ import { DividerAndIconsComponent } from '../../components/divider-and-icons/div
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.css',
 })
-export class ForgetPasswordComponent {
+export class ForgetPasswordComponent implements OnDestroy {
+  private destroy$ = new Subject<void>();
+  
   messageService = inject(MessageService);
   _AuthApiService = inject(AuthApiService);
   private router = inject(Router);
+  private passwordResetService = inject(PasswordResetService);
   forgetPasswordForm: FormGroup;
   formSubmitted = false;
   isSubmitting = false;
@@ -52,44 +57,47 @@ export class ForgetPasswordComponent {
     this.isSubmitting = true;
     this._AuthApiService
       .ForgetPassword(this.forgetPasswordForm.value)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res: any) => {
-          // Check if the response is an error (from catchError of(err))
-          if (res && res.status && res.status >= 400) {
-            // This is an error response
-            console.error('Forget password error:', res);
-            const errorMessage =
-              res.error?.message ||
-              res.message ||
-              'An error occurred during forget password';
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: errorMessage,
-              life: 8000,
-            });
-            this.isSubmitting = false;
-            this.formSubmitted = false;
-            this.forgetPasswordForm.reset();
-          } else {
-            // This is a success response
-            console.log('Forget password success:', res);
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Otp sent successfully ',
-              life: 8000,
-            });
-            setTimeout(() => {
-              this.router.navigate(['/auth/verify-code']);
-            }, 9000);
-          }
+        next: (res: AdaptedForgetPasswordRes) => {
+          // Success response
+          console.log('Forget password success:', res);
+          // Store the email for use in subsequent steps
+          this.passwordResetService.setResetEmail(this.forgetPasswordForm.value.email);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Otp sent successfully ',
+            life: 8000,
+          });
+          setTimeout(() => {
+            this.router.navigate(['/auth/verify-code']);
+          }, 9000);
         },
+        error: (error) => {
+          // Error response
+          console.error('Forget password error:', error);
+          const errorMessage = error.error?.message || error.message || 'An error occurred during forget password';
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: errorMessage,
+            life: 8000,
+          });
+          this.isSubmitting = false;
+          this.formSubmitted = false;
+          this.forgetPasswordForm.reset();
+        }
       });
   }
 
   isInvalid(controlName: string) {
     const control = this.forgetPasswordForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

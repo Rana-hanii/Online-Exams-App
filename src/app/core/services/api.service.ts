@@ -24,11 +24,11 @@ export class ApiService {
     return this.http.get<T>(`${this.baseUrl}${endpoint}`);
   }
 
-  post<T>(endpoint: string, data: any) {
+  post<T>(endpoint: string, data: unknown) {
     return this.http.post<T>(`${this.baseUrl}${endpoint}`, data);
   }
 
-  put<T>(endpoint: string, data: any) {
+  put<T>(endpoint: string, data: unknown) {
     return this.http.put<T>(`${this.baseUrl}${endpoint}`, data);
   }
 
