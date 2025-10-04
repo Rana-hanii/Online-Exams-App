@@ -36,6 +36,11 @@ export const AUTH_ROUTES: Routes = [
         loadComponent: () =>
           import('../../features/auth/pages/set-password/set-password.component').then((m) => m.SetPasswordComponent),
       },
+      {
+        path: 'free-trial-limit',
+        loadComponent: () =>
+          import('../../features/auth/pages/free-trial-limit/free-trial-limit.component').then((m) => m.FreeTrialLimitComponent),
+      },
     ]
   }
 ];

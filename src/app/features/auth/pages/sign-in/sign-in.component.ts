@@ -87,13 +87,22 @@ export class SignInComponent implements OnDestroy {
         error: (error) => {
           // Error response
           console.error('Sign in error:', error);
-          const errorMessage = error.error?.message || error.message || 'An error occurred during sign in';
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: errorMessage,
-            life: 8000,
-          });
+          
+          // Check if this is a free trial limit exceeded error
+          if (this.isFreeTrialLimitError(error)) {
+            // Error interceptor will handle this automatically
+            console.warn('Free trial limit exceeded during sign in');
+          } else {
+            // Handle other errors normally
+            const errorMessage = error.error?.message || error.message || 'An error occurred during sign in';
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: errorMessage,
+              life: 8000,
+            });
+          }
+          
           this.isSubmitting = false;
           this.formSubmitted = false;
           this.signInForm.reset();
@@ -104,6 +113,22 @@ export class SignInComponent implements OnDestroy {
   isInvalid(controlName: string) {
     const control = this.signInForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
+  }
+
+  private isFreeTrialLimitError(error: any): boolean {
+    // Check for ERROR_CUSTOM_MESSAGE with free trial details
+    if (error.error?.error === 'ERROR_CUSTOM_MESSAGE') {
+      const details = error.error.details;
+      return details?.title?.toLowerCase().includes('free trial') || 
+             details?.detail?.toLowerCase().includes('free trial');
+    }
+    
+    // Check for ConnectError with resource_exhausted
+    if (error.message?.includes('ConnectError') && error.message?.includes('resource_exhausted')) {
+      return true;
+    }
+    
+    return false;
   }
 
   ngOnDestroy(): void {
