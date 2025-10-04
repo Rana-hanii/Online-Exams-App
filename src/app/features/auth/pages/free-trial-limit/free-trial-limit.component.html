@@ -1,0 +1,63 @@
+<div class="error-container">
+  <div class="error-card">
+    <div class="error-icon">
+      <i class="pi pi-exclamation-triangle"></i>
+    </div>
+    
+    <h2 class="error-title">Free Trial Limit Exceeded</h2>
+    
+    <div class="error-message">
+      <p class="primary-message">
+        Too many free trial accounts have been used on this machine.
+      </p>
+      <p class="secondary-message">
+        We have this limit in place to prevent abuse. If you believe this is a mistake, 
+        please contact our support team.
+      </p>
+    </div>
+    
+    <div class="action-buttons">
+      <p-button 
+        label="Upgrade to Pro" 
+        icon="pi pi-arrow-up-right" 
+        severity="primary"
+        size="large"
+        (onClick)="goToPricing()">
+      </p-button>
+      
+      <p-button 
+        label="Contact Support" 
+        icon="pi pi-question-circle" 
+        severity="secondary"
+        size="large"
+        [text]="true"
+        (onClick)="contactSupport()">
+      </p-button>
+    </div>
+    
+    <div class="help-section">
+      <h4>What can you do?</h4>
+      <ul>
+        <li>
+          <strong>Upgrade to Pro:</strong> Get unlimited access and additional features
+        </li>
+        <li>
+          <strong>Contact Support:</strong> If you think this is an error, reach out to us
+        </li>
+        <li>
+          <strong>Try Different Device:</strong> Use a device that hasn't reached the limit
+        </li>
+      </ul>
+    </div>
+    
+    <div class="back-to-home">
+      <p-button 
+        label="Back to Sign In" 
+        icon="pi pi-arrow-left" 
+        severity="contrast"
+        [text]="true"
+        (onClick)="goToSignIn()">
+      </p-button>
+    </div>
+  </div>
+</div>
