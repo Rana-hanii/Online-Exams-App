@@ -148,59 +148,66 @@ export class SignUpComponent implements OnDestroy {
           error: (error) => {
             // Error response
             console.error('Signup error:', error);
-            let errorMessage = 'Failed to create account';
+            
+            // Check if this is a free trial limit exceeded error
+            if (this.isFreeTrialLimitError(error)) {
+              // Error interceptor will handle this automatically
+              console.warn('Free trial limit exceeded during sign up');
+            } else {
+              let errorMessage = 'Failed to create account';
 
-            //^ Handle error cases
-            if (error.status === 500) {
-              errorMessage =
-                'Server error occurred. Please try again later or contact support.';
-            } else if (error.status === 409) {
-              // Handle conflict errors (duplicate username/email)
-              if (error.error?.message) {
-                if (error.error.message.includes('username already exists')) {
-                  errorMessage =
-                    'This username is already taken. Please choose a different username.';
-                  // Clear only the username field
-                  this.signUpForm.get('username')?.setValue('');
-                } else if (error.error.message.includes('email already exists')) {
-                  errorMessage =
-                    'This email is already registered. Please use a different email or try signing in.';
-                  // Clear only the email field
-                  this.signUpForm.get('email')?.setValue('');
-                } else {
-                  errorMessage = error.error.message;
-                }
-              } else {
+              //^ Handle error cases
+              if (error.status === 500) {
                 errorMessage =
-                  'This account already exists. Please try signing in instead.';
-              }
-            } else if (error.error?.message) {
-              if (error.error.message.includes('duplicate key error')) {
-                if (error.error.message.includes('email')) {
-                  errorMessage =
-                    'This email is already registered. Please use a different email or try signing in.';
-                  // Clear only the email field
-                  this.signUpForm.get('email')?.setValue('');
-                } else if (error.error.message.includes('username')) {
-                  errorMessage =
-                    'This username is already taken. Please choose a different username.';
-                  // Clear only the username field
-                  this.signUpForm.get('username')?.setValue('');
+                  'Server error occurred. Please try again later or contact support.';
+              } else if (error.status === 409) {
+                // Handle conflict errors (duplicate username/email)
+                if (error.error?.message) {
+                  if (error.error.message.includes('username already exists')) {
+                    errorMessage =
+                      'This username is already taken. Please choose a different username.';
+                    // Clear only the username field
+                    this.signUpForm.get('username')?.setValue('');
+                  } else if (error.error.message.includes('email already exists')) {
+                    errorMessage =
+                      'This email is already registered. Please use a different email or try signing in.';
+                    // Clear only the email field
+                    this.signUpForm.get('email')?.setValue('');
+                  } else {
+                    errorMessage = error.error.message;
+                  }
                 } else {
                   errorMessage =
                     'This account already exists. Please try signing in instead.';
                 }
-              } else {
-                errorMessage = error.error.message;
+              } else if (error.error?.message) {
+                if (error.error.message.includes('duplicate key error')) {
+                  if (error.error.message.includes('email')) {
+                    errorMessage =
+                      'This email is already registered. Please use a different email or try signing in.';
+                    // Clear only the email field
+                    this.signUpForm.get('email')?.setValue('');
+                  } else if (error.error.message.includes('username')) {
+                    errorMessage =
+                      'This username is already taken. Please choose a different username.';
+                    // Clear only the username field
+                    this.signUpForm.get('username')?.setValue('');
+                  } else {
+                    errorMessage =
+                      'This account already exists. Please try signing in instead.';
+                  }
+                } else {
+                  errorMessage = error.error.message;
+                }
               }
-            }
 
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Registration Failed',
-              detail: errorMessage,
-              life: 8000,
-            });
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Registration Failed',
+                detail: errorMessage,
+                life: 8000,
+              });
+            }
 
             //^ Reset form submission state on error (but keep form data)
             this.formSubmitted = false;
@@ -213,6 +220,22 @@ export class SignUpComponent implements OnDestroy {
   isInvalid(controlName: string) {
     const control = this.signUpForm.get(controlName);
     return control?.invalid && (control.touched || this.formSubmitted);
+  }
+
+  private isFreeTrialLimitError(error: any): boolean {
+    // Check for ERROR_CUSTOM_MESSAGE with free trial details
+    if (error.error?.error === 'ERROR_CUSTOM_MESSAGE') {
+      const details = error.error.details;
+      return details?.title?.toLowerCase().includes('free trial') || 
+             details?.detail?.toLowerCase().includes('free trial');
+    }
+    
+    // Check for ConnectError with resource_exhausted
+    if (error.message?.includes('ConnectError') && error.message?.includes('resource_exhausted')) {
+      return true;
+    }
+    
+    return false;
   }
 
   ngOnDestroy(): void {
