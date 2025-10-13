@@ -1,11 +1,21 @@
 <!-- ! lg and xl screens -->
 <div class="hidden lg:flex items-center justify-between py-4 my-6 z-10">
-    <p-iconfield>
-        <p-inputicon class="pi pi-search" />
-        <input type="text" pInputText placeholder="Search Quiz" />
-    </p-iconfield>
-   
-        <button class="xl:px-10 xl:py-3.5 px-6 py-3.5 bg-main text-white rounded-2xl  transition-all duration-500 btn-shadow">Start Quiz</button>
+    <div class="relative w-1/2">
+        <p-iconfield>
+            <p-inputicon class="pi pi-search" />
+            <input type="text" pInputText placeholder="Search Quiz" [(ngModel)]="searchText" />
+        </p-iconfield>
+
+        <!-- suggestions -->
+        <ul *ngIf="searchText" class="absolute bg-white shadow rounded mt-2 w-full max-h-48 overflow-auto z-50">
+            <li *ngFor="let ex of (matches$ | async)" (click)="pickExam(ex)" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                {{ ex.title }}
+            </li>
+            <li *ngIf="(matches$ | async)?.length === 0" class="px-4 py-2 text-gray-500">No quizzes found</li>
+        </ul>
+    </div>
+
+    <button (click)="startQuiz()" class="xl:px-10 xl:py-3.5 px-6 py-3.5 bg-main text-white rounded-2xl  transition-all duration-500 btn-shadow">Start Quiz</button>
         <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="xlarge" shape="circle" />
    
 </div>

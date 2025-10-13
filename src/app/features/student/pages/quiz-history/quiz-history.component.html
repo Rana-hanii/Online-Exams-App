@@ -1,25 +1,33 @@
-<!--^ Quizes History -->
-
-<div class="  py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full ">
-    <div class="flex justify-between items-center my-4 text-main font-semibold ">
+<!-- Quiz History (reads local_quiz_history) -->
+<div class="py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full">
+    <div class="flex justify-between items-center my-4 text-main font-semibold">
         <span>Quizes</span>
+        <!-- <button pButton type="button" label="Clear All" class="p-button-outlined" (click)="clearHistory()"></button> -->
     </div>
+
     <div class="flex flex-col items-start px-2 py-6 lg:h-[75vh] lg:overflow-y-auto">
-        <!-- ^ Quiz -->
-        <div class="lg:px-16 px-8 py-6  my-4 flex justify-between items-center rounded-3xl shadow-lg w-full">
-            <div class="flex  items-center justify-center">
-                <img class="w-16 me-4" src="imags/icon-test-h.png" alt="test-icon">
+        <div *ngIf="history.length === 0" class="text-gray-500 p-6">No history found.</div>
+
+        <div *ngFor="let h of history"
+            class="lg:px-16 px-8 py-6 my-4 flex justify-between items-center rounded-3xl shadow-lg w-full">
+            <div class="flex items-center justify-center">
+                <img class="w-16 me-4" src="imags/icon-test-h.png" alt="test-icon" />
                 <div class="font-semibold">
-                    <h4 class="text-black text-lg">HTML</h4>
-                    <span class="text-gray-500 text-xs">20 Questions </span>
-                    <span class="text-main text-xs mt-3 block">18 corrected answers in 11 minutes.  </span>
+                    <span class="text-gray-500 text-xs">{{ h.total }} Questions</span>
+                    <span class="text-main text-xs mt-3 block">{{ h.correct }} corrected answers in {{ h.date |
+                        date:'short' }}.</span>
                 </div>
-                
             </div>
             <div class="flex flex-col items-center justify-center">
-                <span class="text-black font-semibold text-xs mb-3">15 Minutes</span>
-                <button class="bg-main px-4 py-2 rounded-2xl  btn-shadow transition-all duration-500">answers</button>
+                <span class="text-black font-semibold text-xs mb-3">{{ h.percent }}%</span>
+
+                <button class="bg-main  text-white font-medium px-4 py-2 rounded-2xl btn-shadow transition-all duration-500 cursor-pointer"
+                    (click)="viewEntry(h)">
+                    View Result
+                </button>
             </div>
         </div>
     </div>
+
+
 </div>

@@ -1,5 +1,13 @@
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, isDevMode, provideZoneChangeDetection } from '@angular/core';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
+import {
+  ApplicationConfig,
+  isDevMode,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import {
   provideClientHydration,
   withEventReplay,
@@ -24,28 +32,33 @@ import { appReducers } from './store/app.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([tokenInterceptor])
-    ),
+    provideHttpClient(withFetch(), withInterceptors([tokenInterceptor])),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: 'top' }), withViewTransitions(), withHashLocation()),
+    provideRouter(
+      routes,
+      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
+      withViewTransitions(),
+      withHashLocation()
+    ),
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
     MessageService,
     providePrimeNG({
-        theme: {
-            preset: Aura,
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: false,
         },
+      },
     }),
     provideStore(appReducers),
     provideEffects(appEffects),
-    provideStoreDevtools({ 
-      maxAge: 25, 
+    provideStoreDevtools({
+      maxAge: 25,
       logOnly: !isDevMode(),
       autoPause: true,
       trace: false,
-      traceLimit: 75
-    })
-],
+      traceLimit: 75,
+    }),
+  ],
 };

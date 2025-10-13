@@ -57,7 +57,9 @@ export class ExamModalComponent implements OnInit, OnDestroy {
 
   examId = '';
   //*  Store
-  questionModalOpen$: Observable<boolean> = this.store.select(selectQuestionModalOpen);
+  questionModalOpen$: Observable<boolean> = this.store.select(
+    selectQuestionModalOpen
+  );
   questions$: Observable<Question[]> = this.store.select(selectAllQuestions);
   loading$: Observable<boolean> = this.store.select(selectQuestionsLoading);
   showResults$: Observable<boolean> = this.store.select(selectCheckResult);
@@ -67,6 +69,8 @@ export class ExamModalComponent implements OnInit, OnDestroy {
 
   //* review mode: after submit and clicking Show Results
   reviewMode = false;
+  // if true, timer shouldn't start (used when viewing saved history snapshot or in review)
+  disableTimer = false;
   //* maps for quick lookup of correct answer key and chosen wrong answer per question
   correctAnswerByQuestionId: Record<string, string> = {};
   chosenAnswerByQuestionId: Record<string, string> = {};
@@ -94,7 +98,49 @@ export class ExamModalComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.startTimer();
+    // Start timer only when there are questions. If no questions, ensure timer is stopped.
+    this.questions$.pipe(takeUntil(this.destroy$)).subscribe((qs) => {
+      const qlist = qs ?? [];
+      if (qlist.length > 0) {
+        // if timer not running and not disabled, start it
+        if (!this.disableTimer && (!this.tickSub || this.tickSub.closed)) {
+          this.startTimer();
+        }
+      } else {
+        // no questions -> stop timer and reset secondsLeft so it doesn't count down
+        this.tickSub?.unsubscribe();
+        this.secondsLeft = this.durationMinutes * 60;
+      }
+    });
+
+    // Save result to local history when it appears in the store
+    // If a history entry id is provided in the query params, load snapshot instead of fresh load
+    const historyId = this.route.snapshot.queryParamMap.get('historyId');
+    if (historyId) {
+      try {
+        const key = 'local_quiz_history';
+        const json = localStorage.getItem(key) || '[]';
+        const arr = JSON.parse(json);
+        const entry = arr.find((e: any) => e.id === historyId);
+        if (entry && entry.snapshot) {
+          // apply snapshot to component state
+          const snap = entry.snapshot;
+          this.questions = snap.questions || [];
+          this.selections = snap.selections || {};
+          this.correctAnswerByQuestionId = snap.correctAnswerByQuestionId || {};
+          this.chosenAnswerByQuestionId = snap.chosenAnswerByQuestionId || {};
+          this.reviewMode = true;
+          this.currentIndex = 0;
+          // when viewing a snapshot we must stop the timer and prevent it from restarting
+          this.disableTimer = true;
+          this.tickSub?.unsubscribe();
+          // ensure display shows a stable time (reset to configured duration)
+          this.secondsLeft = this.durationMinutes * 60;
+        }
+      } catch (e) {
+        console.error('Failed to load history snapshot', e);
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -237,6 +283,8 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     this.reviewMode = true;
     //& jump to first question for review
     this.currentIndex = 0;
+    // save a snapshot of the review to local history so it can be viewed later
+    this.saveReviewSnapshot();
   }
   //* Result >> Score Circle
   //^ Computed metrics for the ring segmentation
@@ -257,4 +305,52 @@ export class ExamModalComponent implements OnInit, OnDestroy {
       };
     })
   );
+
+  // Save a review snapshot (questions + selections + lookup maps) when user views results
+  private saveReviewSnapshot() {
+    try {
+      const examId =
+        this.examId || this.route.snapshot.paramMap.get('examId') || '';
+      const now = new Date().toISOString();
+      const correct = Object.keys(this.correctAnswerByQuestionId || {}).filter(
+        (qid) => this.selections[qid] === this.correctAnswerByQuestionId[qid]
+      ).length;
+      const wrong = Object.keys(this.selections || {}).length - correct;
+      const total = Math.max(1, correct + wrong);
+      const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+      const snapshot = {
+        questions: this.questions.map((q) => ({
+          _id: q._id,
+          question: q.question,
+          answers: q.answers,
+          correct: q.correct,
+        })),
+        selections: this.selections,
+        correctAnswerByQuestionId: this.correctAnswerByQuestionId,
+        chosenAnswerByQuestionId: this.chosenAnswerByQuestionId,
+      };
+
+      const entry = {
+        id: `${examId}_${Date.now()}`,
+        examId,
+        date: now,
+        correct,
+        wrong,
+        total,
+        percent,
+        raw: null,
+        snapshot,
+      };
+
+      const key = 'local_quiz_history';
+      const existingJson = localStorage.getItem(key);
+      const arr = existingJson ? JSON.parse(existingJson) : [];
+      arr.unshift(entry);
+      const truncated = arr.slice(0, 100);
+      localStorage.setItem(key, JSON.stringify(truncated));
+    } catch (e) {
+      console.error('Failed to save review snapshot', e);
+    }
+  }
 }

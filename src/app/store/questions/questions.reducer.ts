@@ -32,12 +32,24 @@ export const questionsReducer = createReducer(
   on(QuestionsActions.openQuestionModal, (state, { examId }) => ({
     ...state,
     questionModalOpen: true,
-    selectedExamId: examId
+    selectedExamId: examId,
+  // reset previous exam progress/results when opening a new exam
+  result: undefined,
+    showResults: false,
+    currentQuestionIndex: 0,
+    userAnswers: [],
+    examScore: 0,
   })),
   on(QuestionsActions.closeQuestionModal, state => ({
     ...state,
     questionModalOpen: false,
-    selectedExamId: null
+    selectedExamId: null,
+  // clear transient exam state on close
+  result: undefined,
+    showResults: false,
+    currentQuestionIndex: 0,
+    userAnswers: [],
+    examScore: 0,
   })),
 
   //* history modal
@@ -74,6 +86,12 @@ export const questionsReducer = createReducer(
     ...state,
     loading: false,
     questions,
+  // reset progress/results when questions for a new exam arrive
+  result: undefined,
+    showResults: false,
+    currentQuestionIndex: 0,
+    userAnswers: [],
+    examScore: 0,
   })),
   on(QuestionsActions.loadQuestionsByExamFailure, (state, { error }) => ({
     ...state,

@@ -2,7 +2,7 @@
   <!--* Header -->
   <div class="flex items-center justify-between w-full p-4 ">
     <div class="text-sm text-gray-600">Question {{ currentIndex + 1 }} of {{ questions.length }}</div>
-    <div class="flex items-center gap-2 text-main font-semibold">
+    <div *ngIf="!disableTimer" class="flex items-center gap-2 text-main font-semibold">
       <i class="pi pi-clock text-main"></i>
       <span>{{ mmss }}</span>
     </div>
@@ -101,16 +101,19 @@
   <!--* Footer -->
   <div class="flex items-center justify-between w-full px-4 pb-4 ">
     @if ((showResults$ | async) && !reviewMode) {
-      <button pButton type="button" label="Close" class="p-button-outlined" (click)="close()"></button>
+      <button *ngIf="questions.length === 0" pButton type="button" label="Close" class="p-button-outlined" (click)="close()"></button>
       <button pButton type="button" label="Show Results" class="p-button-success" (click)="showDetailedResults()"></button>
     } @else if (reviewMode) {
-      <button pButton type="button" label="Close" class="p-button-outlined" (click)="close()"></button>
+      <button pButton type="button" label="Close" class="" (click)="close()"></button>
       <div class="flex items-center gap-2">
         <button pButton type="button" label="Back" (click)="back()" [disabled]="currentIndex === 0"></button>
         <button pButton type="button" label="Next" (click)="next()" [disabled]="!canGoNext"></button>
       </div>
     } @else {
-      <button pButton type="button" label="Back" class="p-button-outlined" (click)="back()" [disabled]="currentIndex === 0"></button>
+      <div class="flex items-center gap-2">
+        <button *ngIf="questions.length === 0" pButton type="button" label="Close" class="p-button-outlined" (click)="close()"></button>
+        <button pButton type="button" label="Back" class="p-button-outlined" (click)="back()" [disabled]="currentIndex === 0"></button>
+      </div>
       <div class="flex items-center gap-2">
         <button pButton type="button" label="Next" (click)="next()" [disabled]="!canGoNext"></button>
         <button pButton type="button" label="Submit" class="p-button-success" (click)="submit()" [disabled]="!canSubmit"></button>

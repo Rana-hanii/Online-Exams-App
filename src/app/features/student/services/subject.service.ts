@@ -15,7 +15,6 @@ export class SubjectService {
   getAllSubjects(): Observable<Subject[]> {
     return this.apiService.get<Subject[]>(API_ENDPOINTS.subjects.base);
   }
-
   //* Get subject by ID
   getSubjectById(id: string): Observable<Subject> {
     return this.apiService.get<Subject>(API_ENDPOINTS.subjects.byId(id));
