@@ -1,3 +1,4 @@
+
 import { Routes } from '@angular/router';
 import { StudentLayoutComponent } from '../../layouts/student-layout/student-layout.component';
 
@@ -30,6 +31,11 @@ export const STUDENT_ROUTES: Routes = [
         path: 'quiz-history',
         loadComponent: () =>
           import('../../features/student/pages/quiz-history/quiz-history.component').then((m) => m.QuizHistoryComponent),
+      },
+      {
+        path: 'subjects',
+        loadComponent: () =>
+          import('../../features/student/pages/subject/subject.component').then((m) => m.SubjectsComponent),
       },
     ],
   },

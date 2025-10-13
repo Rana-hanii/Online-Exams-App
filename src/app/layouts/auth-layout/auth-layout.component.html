@@ -1,5 +1,5 @@
 <!--! Main Layout Container -->
-<div class="min-h-screen grid xl:grid-cols-3 lg:grid-cols-2 bg-white overflow-x-hidden">
+<div class="min-h-screen grid xl:grid-cols-3 lg:grid-cols-2   overflow-x-hidden">
 
   <!-- !Left Column  -->
   <div class=" lg:col-span-1 relative ">
@@ -7,9 +7,9 @@
     <app-auth-sidebar></app-auth-sidebar>
   </div>
   <!-- !Right Column  -->
-  <div class="xl:col-span-2 lg:col-span-1 relative flex flex-col xl:me-16 lg:me-6 min-h-screen lg:h-[80vh] lg:overflow-y-auto overflow-x-hidden">
+  <div class="xl:col-span-2 lg:col-span-1 relative flex items-center justify-center flex-col xl:me-16 lg:me-6 min-h-screen lg:h-[80vh] lg:overflow-y-auto overflow-x-hidden">
     <!--! Top Navigation - Fixed -->
-    <div class="flex items-center  justify-end md:mt-10 mt-16 mx-auto sticky top-0 left-0 right-0 bg-white  z-10">
+    <div class="flex items-center  justify-end md:mt-10 mt-16  sticky top-0 left-0 right-0   w-[90%] z-10">
       <div class="flex items-center space-x-4">
         <div class="card flex justify-center">
           <p-select [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="name"
@@ -17,16 +17,16 @@
         </div>
         <div class="flex ">
           <span routerLink="/auth/sign-in" routerLinkActive="bg-blue-50 rounded-xl"
-            class="text-main font-bold text-lg py-2.5 px-4 cursor-pointer mx-4 ">Sign in</span>
+            class="text-main font-bold text-sm lg:text-lg  py-2.5 px-4 cursor-pointer mx-4 ">Sign in</span>
         </div>
       </div>
       <button routerLink="/auth/sign-up" routerLinkActive="bg-blue-50"
-        class="px-4 py-2 border border-blue-200 text-main text-lg rounded-xl hover:bg-blue-50 cursor-pointer ">
+        class="px-4 py-2 border border-blue-200 text-main text-sm lg:text-lg rounded-xl hover:bg-blue-50 cursor-pointer ">
         Register
       </button>
     </div>
     <!--! Router Outlet Container - Scrollable -->
-    <div class="flex-1 flex items-center justify-center   ">
+    <div class="flex-1 flex items-center justify-center ">
       <router-outlet></router-outlet>
     </div>
   </div>

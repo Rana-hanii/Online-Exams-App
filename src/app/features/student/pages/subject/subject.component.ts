@@ -16,8 +16,8 @@ import {
 @Component({
   selector: 'app-subjects',
   imports: [RouterLink, CommonModule, FormsModule],
-  templateUrl: './subjects.component.html',
-  styleUrl: './subjects.component.css',
+  templateUrl: './subject.component.html',
+  styleUrl: './subject.component.css',
 })
 export class SubjectsComponent implements OnInit {
   store = inject(Store<AppState>);

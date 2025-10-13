@@ -25,16 +25,3 @@ interface Metadata {
   numberOfPages: number;
   limit: number;
 }
-
-
-export interface ExamHistory {
-  examId: string;
-  title: string;
-  subject: string;
-  scorePercent: number;
-  correctCount: number;
-  incorrectCount: number;
-  total: number;
-  date: string;
-  answers: any[];
-}

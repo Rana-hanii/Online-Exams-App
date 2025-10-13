@@ -1,6 +1,7 @@
 export const API_ENDPOINTS = {
   subjects: {
     base: `/subjects`, //* get all subjects
+    limit: `/subjects?limit=6`, //* get all subjects
     byId: (id: string) => `/subjects/${id}`, //* get subject by id
     delete: (id: string) => `/subjects/${id}`, //* delete subject by id
     update: (id: string) => `/subjects/${id}`, //* update subject by id

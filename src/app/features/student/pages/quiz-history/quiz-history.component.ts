@@ -1,28 +1,67 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../store/app.state';
-import { openQuestionModal } from '../../../../store/questions/questions.actions';
-import { ExamHistory } from '../../../../shared/interfaces/exam.interface';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+
+interface LocalHistoryEntry {
+  id: string;
+  examId: string;
+  date: string;
+  correct: number;
+  wrong: number;
+  total: number;
+  percent: number;
+  raw?: any;
+  snapshot?: {
+    questions: Array<{
+      _id: string;
+      question: string;
+      answers?: any;
+      correct?: string;
+    }>;
+    selections: Record<string, string>;
+    correctAnswerByQuestionId?: Record<string, string>;
+    chosenAnswerByQuestionId?: Record<string, string>;
+  };
+}
 
 @Component({
   selector: 'app-quiz-history',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, ButtonModule, DialogModule],
   templateUrl: './quiz-history.component.html',
   styleUrl: './quiz-history.component.css',
 })
-export class QuizHistoryComponent {
-  historyExams: ExamHistory[] = [];
-  router = inject(Router);
+export class QuizHistoryComponent implements OnInit {
+  history: LocalHistoryEntry[] = [];
+  selectedEntry: LocalHistoryEntry | null = null;
+  showDialog = false;
+  showRaw = false;
+  private router = inject(Router);
 
-  // constructor(private store: Store<AppState>) {}
+  // metrics similar to exam modal
+  readonly circumference = 251.2;
 
   ngOnInit(): void {
-    this.historyExams = JSON.parse(localStorage.getItem('examHistory') || '[]');
+    this.loadLocalHistory();
   }
 
-  showResult(examId: string): void {
-    console.log('Show result for exam:', examId);
-    this.router.navigate(['/student/exam-modal', examId]);
+  private loadLocalHistory() {
+    try {
+      const key = 'local_quiz_history';
+      const json = localStorage.getItem(key);
+      this.history = json ? JSON.parse(json) : [];
+    } catch (e) {
+      console.error('Failed to load local history', e);
+      this.history = [];
+    }
+  }
+
+  viewEntry(entry: LocalHistoryEntry) {
+    // Navigate to the canonical exam modal route and let the modal load the snapshot by historyId
+    this.router.navigate(['/student/exam-modal', entry.examId], {
+      queryParams: { historyId: entry.id },
+    });
   }
 }
