@@ -3,16 +3,13 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
 
-
-
-
 body {
   font-family: "Poppins", sans-serif;
   font-style: normal;
 }
 
-.bg-layout{
-  background-color: #FBF9F9;
+.bg-layout {
+  background-color: #fbf9f9;
 }
 
 .bg-main {
@@ -23,25 +20,25 @@ body {
 }
 
 .bg-sec {
-    background-color: #f0f4fc;
+  background-color: #f0f4fc;
 }
 .text-sec {
   color: #f0f4fc;
 }
 
-.btn-shadow{
+.btn-shadow {
   box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.5);
-  
 }
-.btn-shadow:hover{
+.btn-shadow:hover {
   box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.8);
-
 }
 
 .custom-shadow {
   box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1) !important;
 }
-
+.custom-shadow-2:hover {
+  box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.2);
+}
 
 /* Custom Scrollbar Styling */
 ::-webkit-scrollbar {
@@ -74,5 +71,3 @@ body {
 html {
   scroll-behavior: smooth;
 }
-
- 

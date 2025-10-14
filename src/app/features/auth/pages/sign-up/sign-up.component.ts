@@ -143,7 +143,7 @@ export class SignUpComponent implements OnDestroy {
             //^ Redirect to sign in page
             setTimeout(() => {
               this.router.navigate(['/auth/sign-in']);
-            }, 5000);
+            }, 4000);
           },
           error: (error) => {
             // Error response

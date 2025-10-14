@@ -1,0 +1,79 @@
+
+:host ::ng-deep .p-inputtext {
+  background-color: #f9f9f9 !important;
+  border-radius: 9.91px !important;
+  color: #a1a4a9 !important;
+  font-size: 13.88px !important;
+  border: #e0e0e9 1px solid !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(68, 97, 242, 0.05) !important;
+  padding: 16px 18px 16px 16px !important;
+  display: inline-block !important;
+  width: 100% !important;
+}
+
+:host ::ng-deep .p-inputtext:enabled:focus {
+  border: #3364fd 2px solid !important;
+}
+:host ::ng-deep .p-password {
+  width: 100% !important;
+  display: block !important;
+}
+
+:host ::ng-deep .p-button {
+  background-color: #4461f2 !important ;
+  border-radius: 20px !important;
+  font-size: 16px !important;
+  box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1) !important;
+  padding: 14px !important;
+  color: white !important;
+  border: 1px solid #4461f2 !important ;
+}
+
+:host ::ng-deep .p-button:hover {
+  box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.25) !important;
+}
+:host ::ng-deep .p-password-overlay {
+  background-color: #f9f9f9 !important;
+  color: #a1a4a9 !important;
+  border: #e0e0e9 1px solid !important;
+  box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.25) !important;
+  border-radius: 12px !important;
+}
+
+:host ::ng-deep .p-password-meter {
+  background: #a1a4a9 !important;
+}
+:host ::ng-deep .p-inputtext.ng-invalid {
+  border-color: #ef4444 !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(239, 68, 68, 0.15) !important;
+}
+
+:host ::ng-deep .p-inputtext.ng-invalid:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(239, 68, 68, 0.25) !important;
+  outline: none !important;
+}
+
+:host ::ng-deep .password-wrapper.password-invalid .p-inputtext,
+:host ::ng-deep .password-wrapper.password-invalid input {
+  border-color: #ef4444 !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(239, 68, 68, 0.15) !important;
+}
+
+:host ::ng-deep .password-wrapper.password-invalid .p-inputtext:focus,
+:host ::ng-deep .password-wrapper.password-invalid input:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0px 10.09px 20.18px 0px rgba(239, 68, 68, 0.25) !important;
+  outline: none !important;
+}
+
+/* Disable the invalid red border/shadow for the old password input only */
+:host ::ng-deep input[formcontrolname="oldPassword"].p-inputtext.ng-invalid {
+  border-color: #e0e0e9 !important;
+  box-shadow: none !important;
+}
+
+:host ::ng-deep input[formcontrolname="oldPassword"].p-inputtext.ng-invalid:focus {
+  border-color: #3364fd !important; /* keep normal focus color */
+  box-shadow: 0 0 0 3px rgba(51,100,253,0.08) !important;
+}

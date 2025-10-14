@@ -1,33 +1,33 @@
 :host ::ng-deep .p-inputtext {
-    background-color: white !important;
-    border-radius: 16px !important;
-    color: #a1a4a9 !important;
-    font-size: 13.88px !important;
-    border: #e0e0e9 0px solid !important;
-    box-shadow: 0px 10.09px 20.18px 0px #0000001A !important;
-    width: 400px !important;
-    padding-block: 16px;
-    z-index: 10 !important;
-  }
+  background-color: white !important;
+  border-radius: 16px !important;
+  color: #a1a4a9 !important;
+  font-size: 13.88px !important;
+  border: #e0e0e9 0px solid !important;
+  box-shadow: 0px 10.09px 20.18px 0px #0000001a !important;
+  width: 100% !important;
+  padding-block: 16px;
+  z-index: 10 !important;
+}
+
+:host ::ng-deep .p-avatar-xl:hover {
+     box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.5);
+}
+.active {
+       box-shadow: 0px 18.45px 30.75px 0px rgba(68, 97, 242, 0.5) !important;
+}
 
 
 
-  @media (min-width: 1400px){
-    :host ::ng-deep .p-inputtext {
-      width: 900px !important;
-    }
-  }
+:host ::ng-deep .p-avatar-xl {
+  width: 55px;
+  height: 55px;
+}
 
+:host ::ng-deep .p-inputicon {
+  color: #4461f2;
+}
 
-  :host ::ng-deep .p-avatar-xl{
-    width: 55px;
-    height: 55px;
-  }
-
-  :host ::ng-deep  .p-inputicon{
-    color: #4461f2;
-  }
-
-  .custom-shadow {
-    box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1) !important;
-  }
+.custom-shadow {
+  box-shadow: 0 5px 100px 0 rgba(0, 0, 0, 0.1) !important;
+}

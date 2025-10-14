@@ -82,7 +82,7 @@ export class SignInComponent implements OnDestroy {
           });
           setTimeout(() => {
             this.router.navigate(['/student/dashboard']);
-          }, 5000);
+          }, 4000);
         },
         error: (error) => {
           // Error response
