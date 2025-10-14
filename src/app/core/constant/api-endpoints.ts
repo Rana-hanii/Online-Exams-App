@@ -23,4 +23,10 @@ export const API_ENDPOINTS = {
     check: `/questions/check`, //* check questions
     add: `/questions`, //* add new question
   },
+
+  user:{
+    profileData:'/auth/profileData',
+    updateProfile:'/auth/editProfile',
+    changePassword:'/auth/changePassword'
+  }
 };

@@ -1,27 +1,33 @@
 <!-- ! lg and xl screens -->
 <div class="hidden lg:flex items-center justify-between py-4 my-6 z-10">
-    <div class="relative w-1/2">
+    <div class="relative !w-1/2">
         <p-iconfield>
             <p-inputicon class="pi pi-search" />
             <input type="text" pInputText placeholder="Search Quiz" [(ngModel)]="searchText" />
         </p-iconfield>
 
-        <!-- suggestions -->
+
         <ul *ngIf="searchText" class="absolute bg-white shadow rounded mt-2 w-full max-h-48 overflow-auto z-50">
-            <li *ngFor="let ex of (matches$ | async)" (click)="pickExam(ex)" class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+            <li *ngFor="let ex of (matches$ | async)" (click)="pickExam(ex)"
+                class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 {{ ex.title }}
             </li>
             <li *ngIf="(matches$ | async)?.length === 0" class="px-4 py-2 text-gray-500">No quizzes found</li>
         </ul>
     </div>
+    <button (click)="startQuiz()"
+        class="xl:px-10 xl:py-3.5 px-6 py-3.5 bg-main cursor-pointer hover:-translate-y-0.5 text-white rounded-2xl  transition-all duration-500 btn-shadow">Start
+        Quiz</button>
 
-    <button (click)="startQuiz()" class="xl:px-10 xl:py-3.5 px-6 py-3.5 bg-main text-white rounded-2xl  transition-all duration-500 btn-shadow">Start Quiz</button>
-        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="xlarge" shape="circle" />
-   
+    <p-avatar routerLink="/student/profile" routerLinkActive="active"
+        class="cursor-pointer  hover:-translate-y-0.5 transition-all duration-300"
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="xlarge" shape="circle" />
+
 </div>
 
 <!-- !Small screens -->
-<div class="lg:hidden flex items-center justify-between bg-sec custom-shadow px-6 py-4 rounded-b-3xl fixed top-0 right-0 left-0 z-50">
+<div
+    class="lg:hidden flex items-center justify-between bg-sec custom-shadow px-6 py-4 rounded-b-3xl fixed top-0 right-0 left-0 z-50">
     <div class="icons text-main flex justify-center items-center">
         <span class="me-2 cursor-pointer" (click)="onToggleSidebar()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
@@ -39,6 +45,7 @@
         </span>
     </div>
     <div>
-        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="xlarge" shape="circle" />
+        <p-avatar routerLink="/student/profile" routerLinkActive="active" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" size="xlarge"
+            shape="circle" />
     </div>
 </div>

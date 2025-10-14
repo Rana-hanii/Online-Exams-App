@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AvatarModule } from 'primeng/avatar';
 import { IconField } from 'primeng/iconfield';
@@ -13,9 +13,10 @@ import { AppState } from '../../../../store/app.state';
 import { loadExams } from '../../../../store/exams/exams.actions';
 import { selectAllExams } from '../../../../store/exams/exams.selectors';
 
+
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, InputIcon, IconField, InputTextModule, FormsModule, AvatarModule],
+  imports: [CommonModule, InputIcon, IconField, InputTextModule, FormsModule, AvatarModule, RouterLink,RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

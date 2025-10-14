@@ -1,0 +1,70 @@
+<p-toast></p-toast>
+<div class="  max-w-8xl  mx-auto  md:p-10 2xl:p-20  rounded-2xl md:bg-white mt-30 lg:mt-10 lg:h-[80vh]  lg:overflow-y-auto ">
+  <h2 class="text-2xl font-semibold mb-4 mt-10">Edit Profile</h2>
+
+  <form
+    class="grid grid-cols-1 gap-4 md:grid-cols-2 p-5 md:p-10  2xl:p-20 rounded-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
+    (ngSubmit)="saveProfile()" [formGroup]="profileForm">
+    <div class="col-span-2 md:col-span-1">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+      <input pInputText formControlName="username" class="w-full p-2 border rounded" />
+    </div>
+
+    <div class="col-span-2 md:col-span-1">
+      <label class="block md:col-span-1 text-sm font-medium text-gray-700 mb-1">First name</label>
+      <input pInputText formControlName="firstName" class="w-full p-2 border rounded" />
+    </div>
+
+    <div class="col-span-2 md:col-span-1">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Last name</label>
+      <input pInputText formControlName="lastName" class="w-full p-2 border rounded" />
+    </div>
+
+    <div class="col-span-2 md:col-span-1">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+      <input pInputText formControlName="email" class="w-full p-2 border rounded" />
+    </div>
+
+    <div class="col-span-2 md:col-span-1">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+      <input pInputText formControlName="phone" class="w-full p-2 border rounded" />
+    </div>
+
+    <div class="col-span-2 flex justify-end mt-4">
+      <button pButton type="submit" label="Save" class="p-button-primary"></button>
+    </div>
+  </form>
+
+
+
+  <h3 class="text-xl font-semibold mb-6 mt-10">Change Password</h3>
+  <form
+    class="grid grid-cols-1 gap-4 md:grid-cols-2 p-5 md:p-10  2xl:p-20 rounded-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
+    (ngSubmit)="changePassword()" [formGroup]="passwordForm">
+    <div class="col-span-2">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Old password</label>
+      <div [class.password-invalid]="isInvalid('oldPassword')" class="password-wrapper">
+        <p-password formControlName="oldPassword" [toggleMask]="true" [feedback]="false" placeholder="Old password"
+          [class.ng-invalid]="isInvalid('oldPassword')" [class.invalid-field]="isInvalid('oldPassword')" class="w-full" />
+      </div>
+    </div>
+    <div class="col-span-2 md:col-span-1">
+      <label class="block text-sm font-medium text-gray-700 mb-1">New password</label>
+      <div [class.password-invalid]="isInvalid('password')" class="password-wrapper">
+        <p-password formControlName="password" [toggleMask]="true" placeholder="Password"
+          [class.ng-invalid]="isInvalid('password')" [class.invalid-field]="isInvalid('password')" class="w-full" />
+      </div>
+    </div>
+    <div class="col-span-2 md:col-span-1">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Confirm new</label>
+      <div [class.password-invalid]="isInvalid('rePassword')" class="password-wrapper">
+        <p-password formControlName="rePassword" [toggleMask]="true" [feedback]="false" placeholder="Confirm Password"
+          [class.ng-invalid]="isInvalid('rePassword')" [class.invalid-field]="isInvalid('rePassword')" class="w-full" />
+      </div>
+    </div>
+
+    <div class="col-span-2 flex justify-end mt-4">
+      <button pButton type="submit" label="Change Password" class="p-button-secondary"></button>
+    </div>
+  </form>
+</div>

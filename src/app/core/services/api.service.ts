@@ -28,6 +28,10 @@ export class ApiService {
     return this.http.post<T>(`${this.baseUrl}${endpoint}`, data);
   }
 
+  patch<T>(endpoint: string, data: unknown) {
+    return this.http.patch<T>(`${this.baseUrl}${endpoint}`, data);
+  }
+
   put<T>(endpoint: string, data: unknown) {
     return this.http.put<T>(`${this.baseUrl}${endpoint}`, data);
   }
