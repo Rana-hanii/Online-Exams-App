@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from '../../layouts/auth-layout/auth-layout.component';
+import { AuthGuard } from '../guards/auth.guard';
 
 export const AUTH_ROUTES: Routes = [
   {
     path: '',
     component: AuthLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -38,5 +40,6 @@ export const AUTH_ROUTES: Routes = [
           import('../../features/auth/pages/set-password/set-password.component').then((m) => m.SetPasswordComponent),
       },
     ]
-  }
+  } 
+  
 ];

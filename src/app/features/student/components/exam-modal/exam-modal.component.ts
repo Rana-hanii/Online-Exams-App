@@ -45,7 +45,6 @@ import { AosDirective } from '../../../../shared/directives/aos.directive';
     DialogModule,
     ButtonModule,
     RadioButtonModule,
-    AosDirective
   ],
   templateUrl: './exam-modal.component.html',
   styleUrl: './exam-modal.component.css',

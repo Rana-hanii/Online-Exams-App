@@ -121,7 +121,7 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
           });
           setTimeout(() => {
             this.router.navigate(['/student/dashboard']);
-          }, 9000);
+          }, 3000);
         },
         error: (error) => {
           // Error response
