@@ -34,6 +34,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 @Component({
   selector: 'app-exam-modal',
@@ -44,6 +45,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     DialogModule,
     ButtonModule,
     RadioButtonModule,
+    AosDirective
   ],
   templateUrl: './exam-modal.component.html',
   styleUrl: './exam-modal.component.css',

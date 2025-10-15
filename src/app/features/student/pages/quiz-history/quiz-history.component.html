@@ -1,5 +1,6 @@
 <!-- Quiz History (reads local_quiz_history) -->
-<div class="py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full">
+<div class="py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full" dataAos="fade-up" dataAosDuration="1000"
+    data-aos-delay="400">
     <div class="flex justify-between items-center my-4 text-main font-semibold">
         <span>Quizes</span>
         <!-- <button pButton type="button" label="Clear All" class="p-button-outlined" (click)="clearHistory()"></button> -->
@@ -15,10 +16,10 @@
                 <div class="font-semibold">
                     <span class="text-gray-500 text-xs">{{ h.total }} Questions | </span>
                     <span class="text-green-700 text-xs mt-3 ">
-                        {{ h.correct }}  corrected
+                        {{ h.correct }} corrected
                     </span>
                     <span class="text-gray-500 text-xs mt-3  flex !items-center justify-between">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 "> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 ">
                             <path
                                 d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" />
                             <path fill-rule="evenodd"
@@ -36,7 +37,7 @@
                 <button
                     class="bg-main   text-white font-medium px-4 py-2 rounded-2xl btn-shadow transition-all duration-500 cursor-pointer"
                     (click)="viewEntry(h)">
-                     viewResult
+                    viewResult
                 </button>
             </div>
         </div>

@@ -12,11 +12,12 @@ import { Exam } from '../../../../shared/interfaces/exam.interface';
 import { AppState } from '../../../../store/app.state';
 import { loadExams } from '../../../../store/exams/exams.actions';
 import { selectAllExams } from '../../../../store/exams/exams.selectors';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, InputIcon, IconField, InputTextModule, FormsModule, AvatarModule, RouterLink,RouterLinkActive],
+  imports: [CommonModule, InputIcon, IconField, InputTextModule, FormsModule, AvatarModule, RouterLink,RouterLinkActive,AosDirective],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

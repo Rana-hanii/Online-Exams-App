@@ -1,6 +1,7 @@
 <!--^ Exams List -->
 
-<div class="py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full">
+<div class="py-5 rounded-3xl w-full lg:pt-5 lg:mt-6 h-full" dataAos="fade-up" dataAosDuration="1000"
+    data-aos-delay="400">
     <div class="flex justify-between items-center my-4 text-main font-semibold">
         <span>Exams</span>
     </div>
@@ -18,7 +19,8 @@
         }
 
         @for (exam of ((exams$ | async) ?? []); track exam._id) {
-        <div class="lg:px-16 px-8 py-6 my-4 flex flex-col md:flex-row  justify-between items-center rounded-3xl shadow-lg w-full">
+        <div
+            class="lg:px-16 px-8 py-6 my-4 flex flex-col md:flex-row  justify-between items-center rounded-3xl shadow-lg w-full">
             <div class="flex items-center justify-center">
                 <img class="w-16 me-4" src="imags/icon-test.png" alt="test-icon">
                 <div class="font-semibold">
@@ -28,7 +30,8 @@
             </div>
             <div class="flex flex-col items-center justify-center pt-20 md:pt-0">
                 <span class="text-black font-semibold text-xs mb-3">{{ exam.duration }} Minutes</span>
-                <button class="bg-main  text-white font-medium px-4 py-2 rounded-2xl btn-shadow transition-all duration-500 cursor-pointer"
+                <button
+                    class="bg-main  text-white font-medium px-4 py-2 rounded-2xl btn-shadow transition-all duration-500 cursor-pointer"
                     (click)="startExam(exam._id)">
                     Start
                 </button>

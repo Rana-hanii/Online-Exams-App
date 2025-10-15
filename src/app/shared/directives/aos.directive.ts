@@ -1,32 +1,40 @@
-import { Directive, ElementRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AosService } from '../../core/services/aos.service';
 
 @Directive({
-  selector: '[dataAos]',
+  // support both camelCase usage and standard hyphenated attribute
+  selector: '[dataAos],[data-aos]',
   standalone: true,
 })
-export class AosDirective implements OnInit, OnChanges {
+export class AosDirective implements AfterViewInit, OnChanges {
+  // support camelCase and hyphenated aliases
   @Input('dataAos') aosName?: string;
+  @Input('data-aos') aosHyphen?: string;
   @Input('dataAosDuration') aosDuration?: string | number;
+  @Input('data-aos-duration') aosDurationHyphen?: string | number;
 
   constructor(private el: ElementRef, private aos: AosService) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.apply();
-    this.aos.refresh();
+    // small timeout ensures child components/templates are rendered
+    setTimeout(() => this.aos.refresh(), 50);
   }
 
   ngOnChanges(_: SimpleChanges) {
     this.apply();
-    this.aos.refresh();
+    setTimeout(() => this.aos.refresh(), 50);
   }
 
   private apply() {
-    if (this.aosName) {
-      this.el.nativeElement.setAttribute('data-aos', this.aosName);
+    const name = this.aosName ?? this.aosHyphen;
+    const duration = this.aosDuration ?? this.aosDurationHyphen;
+
+    if (name) {
+      this.el.nativeElement.setAttribute('data-aos', name);
     }
-    if (this.aosDuration) {
-      this.el.nativeElement.setAttribute('data-aos-duration', `${this.aosDuration}`);
+    if (duration) {
+      this.el.nativeElement.setAttribute('data-aos-duration', `${duration}`);
     }
   }
 }

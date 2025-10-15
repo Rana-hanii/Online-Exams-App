@@ -15,6 +15,7 @@ import { EditProfileService } from '../../services/edit-profile.service';
 // import { passwordMatchValidator } from '../../../../shared/utils/validators';
 import { PasswordModule } from 'primeng/password';
 import { Router } from '@angular/router';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 @Component({
   selector: 'app-edit-profile',
@@ -26,6 +27,7 @@ import { Router } from '@angular/router';
     ButtonModule,
     InputTextModule,
     PasswordModule,
+    AosDirective
   ],
   providers: [MessageService],
   templateUrl: './edit-profile.component.html',

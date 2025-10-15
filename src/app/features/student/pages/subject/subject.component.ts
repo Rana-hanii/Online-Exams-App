@@ -12,10 +12,11 @@ import {
     selectSubjectsError,
     selectSubjectsLoading,
 } from '../../../../store/subjects/subjects.selectors';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 @Component({
   selector: 'app-subjects',
-  imports: [RouterLink, CommonModule, FormsModule],
+  imports: [RouterLink, CommonModule, FormsModule,AosDirective],
   templateUrl: './subject.component.html',
   styleUrl: './subject.component.css',
 })

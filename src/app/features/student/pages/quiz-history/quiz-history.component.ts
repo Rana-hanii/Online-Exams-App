@@ -3,6 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 interface LocalHistoryEntry {
   id: string;
@@ -29,7 +30,7 @@ interface LocalHistoryEntry {
 @Component({
   selector: 'app-quiz-history',
   standalone: true,
-  imports: [CommonModule, ButtonModule, DialogModule],
+  imports: [CommonModule, ButtonModule, DialogModule,AosDirective],
   templateUrl: './quiz-history.component.html',
   styleUrl: './quiz-history.component.css',
 })

@@ -1,5 +1,6 @@
 <!-- ! lg and xl screens -->
-<div class="hidden lg:flex items-center justify-between py-4 my-6 z-10">
+<div class="hidden lg:flex items-center justify-between py-4 my-6 z-10" dataAos="fade-down"
+    dataAosDuration="1000" data-aos-delay="500">
     <div class="relative !w-1/2">
         <p-iconfield>
             <p-inputicon class="pi pi-search" />
@@ -27,7 +28,9 @@
 
 <!-- !Small screens -->
 <div
-    class="lg:hidden flex items-center justify-between bg-sec custom-shadow px-6 py-4 rounded-b-3xl fixed top-0 right-0 left-0 z-50">
+    class="lg:hidden flex items-center justify-between bg-sec custom-shadow px-6 py-4 rounded-b-3xl fixed top-0 right-0 left-0 z-50"
+    dataAos="fade-down"
+    dataAosDuration="1000" data-aos-delay="500">
     <div class="icons text-main flex justify-center items-center">
         <span class="me-2 cursor-pointer" (click)="onToggleSidebar()">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
