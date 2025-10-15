@@ -12,10 +12,11 @@ import {
   selectSubjectsError,
   selectSubjectsLoading,
 } from '../../../../store/subjects/subjects.selectors';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, AosDirective],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
