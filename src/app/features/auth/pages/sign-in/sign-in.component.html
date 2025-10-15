@@ -1,12 +1,12 @@
 <p-toast />
-<div class="flex flex-col items-center justify-center ">
+<div class=" max-w-8xl  mx-auto flex flex-col items-center justify-center " dataAos="fade-left" dataAosDuration="1000" data-aos-delay="600">
   <div class="w-full max-w-2xl  ">
     <!-- Header -->
-    <div class="flex items-center justify-between mb-8 my-6">
+    <div class="flex items-center justify-between mb-8 my-6" >
       <h1 class="text-2xl font-bold text-gray-900">Sign in</h1>
     </div>
-    <!--! Form -->
-    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" class="space-y-4 w-2xs md:w-sm xl:w-lg max-w-lg mx-auto !bg-transparent">
+  <!--! Form -->
+  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" class="space-y-4 w-2xs md:w-sm xl:w-lg max-w-lg mx-auto !bg-transparent">
  
       <!--! Email -->
       <div class="flex flex-col gap-1 ">

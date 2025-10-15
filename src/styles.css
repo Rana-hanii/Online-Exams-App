@@ -2,6 +2,7 @@
 
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
+@import "aos/dist/aos.css";
 
 body {
   font-family: "Poppins", sans-serif;
@@ -52,22 +53,111 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4461f2;
+  background: f0f4fc;
   border-radius: 10px;
   transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3351d1;
+  background: rgba(68, 97, 242, 0.2);
 }
 
 /* Firefox Scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #4461f2 #f1f1f1;
+  scrollbar-color: rgba(68, 97, 242, 0.2) #ffffff;
 }
 
 /* Smooth scrolling for the whole page */
 html {
   scroll-behavior: smooth;
 }
+
+/* Responsive adjustments for PrimeNG toast on small screens */
+@media (max-width: 640px) {
+  /* make toast full-width but with side padding and centered */
+  .p-toast {
+    position: fixed !important;
+  }
+
+  .p-toast.p-toast-top-right,
+  .p-toast.p-toast-top-left,
+  .p-toast.p-toast-top-center {
+    /* left: 0 !important; */
+    right: 0 !important;
+    top: 72px !important; /* below fixed header */
+    width: auto !important;
+    padding: 0 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ensure messages don't overflow the viewport */
+  .p-toast .p-toast-message {
+    max-width: calc(100% - 24px) !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  /* slightly reduce font size to fit better */
+  .p-toast .p-toast-message .p-toast-summary {
+    font-size: 14px !important;
+  }
+
+  .p-toast .p-toast-message .p-toast-detail {
+    font-size: 12px !important;
+  }
+  
+}
+
+/* Light theme for toast notifications */
+:host ::ng-deep .p-toast {
+  z-index: 1000;
+}
+
+:host ::ng-deep .p-toast .p-toast-message {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  color: #374151 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+  border-left: 4px solid #10b981 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+  border-left: 4px solid #ef4444 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-message-content {
+  padding: 1rem !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-summary {
+  font-weight: 600 !important;
+  color: #111827 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-detail {
+  color: #6b7280 !important;
+  margin-top: 0.25rem !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon {
+  color: #10b981 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error .p-toast-icon {
+  color: #ef4444 !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon-close {
+  color: #9ca3af !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-icon-close:hover {
+  color: #6b7280 !important;
+}
+

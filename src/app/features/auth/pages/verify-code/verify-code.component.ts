@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { Subject, takeUntil } from 'rxjs';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 import { PasswordResetService } from '../../services/password-reset.service';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 @Component({
   selector: 'app-verify-code',
@@ -27,6 +28,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
     ToastModule,
     MessageModule,
     DividerAndIconsComponent,
+    AosDirective
   ],
   templateUrl: './verify-code.component.html',
   styleUrl: './verify-code.component.css',

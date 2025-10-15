@@ -17,6 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AuthTokenService } from '../../../../core/services/auth-token.service';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
 import { PasswordResetService } from '../../services/password-reset.service';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 @Component({
   selector: 'app-set-password',
@@ -28,6 +29,7 @@ import { PasswordResetService } from '../../services/password-reset.service';
     MessageModule,
     PasswordModule,
     DividerAndIconsComponent,
+    AosDirective
   ],
   templateUrl: './set-password.component.html',
   styleUrl: './set-password.component.css',

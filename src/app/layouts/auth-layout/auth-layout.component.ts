@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Select } from 'primeng/select';
 import { AuthSidebarComponent } from '../../features/auth/components/auth-sidebar/auth-sidebar.component';
 import { LanguageCodes } from '../../shared/enums/language-codes.enum';
+import { AosDirective } from '../../shared/directives/aos.directive';
 
 interface Language {
   name: string;
@@ -19,6 +20,7 @@ interface Language {
     RouterLinkActive,
     FormsModule,
     Select,
+    AosDirective
   ],
   templateUrl: './auth-layout.component.html',
   styleUrl: './auth-layout.component.css',

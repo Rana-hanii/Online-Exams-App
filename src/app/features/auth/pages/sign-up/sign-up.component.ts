@@ -16,6 +16,7 @@ import { PasswordModule } from 'primeng/password';
 import { ToastModule } from 'primeng/toast';
 import { Subject, takeUntil } from 'rxjs';
 import { DividerAndIconsComponent } from '../../components/divider-and-icons/divider-and-icons.component';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 
 @Component({
@@ -30,6 +31,7 @@ import { DividerAndIconsComponent } from '../../components/divider-and-icons/div
     MessageModule,
     PasswordModule,
     DividerAndIconsComponent,
+    AosDirective
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css',
