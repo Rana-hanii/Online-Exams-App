@@ -40,5 +40,6 @@ export const AUTH_ROUTES: Routes = [
           import('../../features/auth/pages/set-password/set-password.component').then((m) => m.SetPasswordComponent),
       },
     ]
-  }
+  } 
+  
 ];

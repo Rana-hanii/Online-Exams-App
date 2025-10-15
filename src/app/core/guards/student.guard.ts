@@ -14,5 +14,6 @@ export class StudentGuard implements CanActivate {
       return false;
     }
     return true;
-  }
+  } 
+  
 }

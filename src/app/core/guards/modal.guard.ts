@@ -30,4 +30,5 @@ export class ModalGuard implements CanDeactivate<CanComponentDeactivate> {
       })
     );
   }
+  
 }
