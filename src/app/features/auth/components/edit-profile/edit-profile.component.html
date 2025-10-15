@@ -1,10 +1,10 @@
 <p-toast></p-toast>
-<div class="  max-w-8xl  mx-auto  md:p-10 2xl:p-20  rounded-2xl md:bg-white mt-30 lg:mt-10 lg:h-[80vh]  lg:overflow-y-auto ">
+<div class="  max-w-8xl  mx-auto  md:p-10 2xl:p-20  rounded-2xl md:bg-white mt-30 lg:mt-10 lg:h-[80vh]  lg:overflow-y-auto " dataAos="fade-up" dataAosDuration="1000" data-aos-delay="400">
   <h2 class="text-2xl font-semibold mb-4 mt-10">Edit Profile</h2>
 
   <form
     class="grid grid-cols-1 gap-4 md:grid-cols-2 p-5 md:p-10  2xl:p-20 rounded-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
-    (ngSubmit)="saveProfile()" [formGroup]="profileForm">
+    (ngSubmit)="saveProfile()" [formGroup]="profileForm" >
     <div class="col-span-2 md:col-span-1">
       <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
       <input pInputText formControlName="username" class="w-full p-2 border rounded" />

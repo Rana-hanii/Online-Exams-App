@@ -11,10 +11,11 @@ import {
   selectExamsError,
   selectExamsLoading
 } from '../../../../store/exams/exams.selectors';
+import { AosDirective } from '../../../../shared/directives/aos.directive';
 
 @Component({
   selector: 'app-exams',
-  imports: [CommonModule],
+  imports: [CommonModule,AosDirective],
   templateUrl: './exams.component.html',
   styleUrl: './exams.component.css'
 })

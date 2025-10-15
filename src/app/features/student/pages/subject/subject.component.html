@@ -1,7 +1,8 @@
 <div class="h-full bg-gray-50 py-3">
   <div class="mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
-    <div class="mb-8">
+    <div class="mb-8" dataAos="fade-down" dataAosDuration="1000"
+    data-aos-delay="400">
       <h1 class="text-3xl font-bold text-gray-900 mb-2 mt-10 lg:mt-0">All Subjects</h1>
       <p class="text-gray-600">Browse through all available subjects and start your learning journey</p>
       @if (subjectsCount$ | async) {
@@ -12,7 +13,8 @@
 
 
     <!-- Subjects Grid -->
-    <div class="lg:h-[70vh] lg:overflow-y-auto lg:pe-6 py-3 lg:ps-2 ">
+    <div class="lg:h-[70vh] lg:overflow-y-auto lg:pe-6 py-3 lg:ps-2 " dataAos="fade-up" dataAosDuration="1000"
+    data-aos-delay="400">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" >
         @if (loading$ | async) {
           <div class="col-span-full py-12 text-center">

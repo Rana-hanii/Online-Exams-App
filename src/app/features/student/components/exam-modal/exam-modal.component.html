@@ -1,4 +1,6 @@
-<p-dialog [visible]="(questionModalOpen$ | async) || false" [modal]="true" [draggable]="false" [closable]="false" [style]="{ width: '720px' }" contentStyleClass="p-0">
+<p-dialog [visible]="(questionModalOpen$ | async) || false" [modal]="true" [draggable]="false" [closable]="false"
+  [style]="{ width: '720px' }" contentStyleClass="p-0"  
+  >
   <!--* Header -->
   <div class="flex items-center justify-between w-full p-4 ">
     <div class="text-sm text-gray-600">Question {{ currentIndex + 1 }} of {{ questions.length }}</div>
@@ -12,112 +14,112 @@
   <!--* Result -->
   <div class="p-6">
     @if ((showResults$ | async) && !reviewMode) {
-      <div class="text-center">
-        <h3 class="text-xl font-semibold mb-6 text-left">Your score</h3>
-        <div class="flex items-center justify-center gap-8 mb-6">
-          <!--^ Score Circle -->
-          <div class="relative w-28 h-28">
-            <svg class="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
-              <!--^ Background circle -->
-              <circle cx="50" cy="50" r="40" stroke="#e5e7eb" stroke-width="8" fill="none"/>
-              <!--^ Correct (blue) segment -->
-              <circle cx="50" cy="50" r="40" stroke="#2563eb" stroke-width="8" fill="none"
-                      [attr.stroke-dasharray]="(metrics$ | async)?.blueDash"
-                      [attr.stroke-dashoffset]="0" stroke-linecap="round"/>
-              <!--^ Incorrect (red) segment -->
-              <circle cx="50" cy="50" r="40" stroke="#ef4444" stroke-width="8" fill="none"
-                      [attr.stroke-dasharray]="(metrics$ | async)?.redDash"
-                      [attr.stroke-dashoffset]="(metrics$ | async)?.redOffset" stroke-linecap="round"/>
-            </svg>
-               <!--^ percent -->
-            <div class="absolute inset-0 flex items-center justify-center text-lg font-bold">
-              {{ scorePercent$ | async }}%
+    <div class="text-center">
+      <h3 class="text-xl font-semibold mb-6 text-left">Your score</h3>
+      <div class="flex items-center justify-center gap-8 mb-6">
+        <!--^ Score Circle -->
+        <div class="relative w-28 h-28">
+          <svg class="w-28 h-28 -rotate-90" viewBox="0 0 100 100">
+            <!--^ Background circle -->
+            <circle cx="50" cy="50" r="40" stroke="#e5e7eb" stroke-width="8" fill="none" />
+            <!--^ Correct (blue) segment -->
+            <circle cx="50" cy="50" r="40" stroke="#2563eb" stroke-width="8" fill="none"
+              [attr.stroke-dasharray]="(metrics$ | async)?.blueDash" [attr.stroke-dashoffset]="0"
+              stroke-linecap="round" />
+            <!--^ Incorrect (red) segment -->
+            <circle cx="50" cy="50" r="40" stroke="#ef4444" stroke-width="8" fill="none"
+              [attr.stroke-dasharray]="(metrics$ | async)?.redDash"
+              [attr.stroke-dashoffset]="(metrics$ | async)?.redOffset" stroke-linecap="round" />
+          </svg>
+          <!--^ percent -->
+          <div class="absolute inset-0 flex items-center justify-center text-lg font-bold">
+            {{ scorePercent$ | async }}%
+          </div>
+        </div>
+
+        <!--* Score Details -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="text-blue-600 font-medium">Correct</span>
+            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+              <span class="text-blue-600 font-semibold text-sm">{{ correctCount$ | async }}</span>
             </div>
           </div>
-
-          <!--* Score Details -->
-          <div class="space-y-3">
-            <div class="flex items-center gap-3">
-              <span class="text-blue-600 font-medium">Correct</span>
-              <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <span class="text-blue-600 font-semibold text-sm">{{ correctCount$ | async }}</span>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="text-red-600 font-medium">Incorrect</span>
-              <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                <span class="text-red-600 font-semibold text-sm">{{ incorrectCount$ | async }}</span>
-              </div>
+          <div class="flex items-center gap-3">
+            <span class="text-red-600 font-medium">Incorrect</span>
+            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+              <span class="text-red-600 font-semibold text-sm">{{ incorrectCount$ | async }}</span>
             </div>
           </div>
         </div>
       </div>
+    </div>
     } @else {
-      @if (loading$ | async) {
-        <div class="py-10 text-center text-gray-500">Loading...</div>
-      } @else {
-        <!--* Exam Questions -->
-        @if (questions.length > 0) {
-          <!--^ Progress dots -->
-          <div class="flex items-center gap-2 mb-5">
-            @for (_ of questions; track $index; let i = $index) {
-              <span class="h-2 w-2 rounded-full" [ngClass]="progressClass(i)"></span>
-            }
-          </div>
+    @if (loading$ | async) {
+    <div class="py-10 text-center text-gray-500">Loading...</div>
+    } @else {
+    <!--* Exam Questions -->
+    @if (questions.length > 0) {
+    <!--^ Progress dots -->
+    <div class="flex items-center gap-2 mb-5">
+      @for (_ of questions; track $index; let i = $index) {
+      <span class="h-2 w-2 rounded-full" [ngClass]="progressClass(i)"></span>
+      }
+    </div>
 
-          <!--^ Question text -->
-          <h3 class="text-lg font-semibold text-gray-900 leading-7 mb-4">{{ questions[currentIndex].question }}</h3>
+    <!--^ Question text -->
+    <h3 class="text-lg font-semibold text-gray-900 leading-7 mb-4">{{ questions[currentIndex].question }}</h3>
 
-          <!--^ Answers -->
-          <div class="space-y-3">
-            @for (ans of questions[currentIndex].answers; track ans.key) {
-              <div class="rounded-xl border p-3 transition-colors cursor-pointer "
-                   [ngClass]="{
+    <!--^ Answers -->
+    <div class="space-y-3">
+      @for (ans of questions[currentIndex].answers; track ans.key) {
+      <div class="rounded-xl border p-3 transition-colors cursor-pointer " [ngClass]="{
                      'bg-blue-50 border-blue-500 border-2': !reviewMode && isSelected(questions[currentIndex]._id, ans.key),
                      'bg-green-50 border-green-500 border-2': reviewMode && isCorrectOption(questions[currentIndex]._id, ans.key),
                      'bg-red-50 border-red-500 border-2': reviewMode && isWrongChosen(questions[currentIndex]._id, ans.key),
                      'border-gray-300 hover:bg-blue-50': (!reviewMode && !isSelected(questions[currentIndex]._id, ans.key)) || (reviewMode && !isCorrectOption(questions[currentIndex]._id, ans.key) && !isWrongChosen(questions[currentIndex]._id, ans.key))
-                   }"
-                   (click)="selectAnswer(questions[currentIndex]._id, ans.key)">
-                <div class="flex items-center">
-                  <p-radioButton name="answer"
-                                 [inputId]="ans.key"
-                                 [value]="ans.key"
-                                 [disabled]="reviewMode"
-                                 [ngModel]="selections[questions[currentIndex]._id]"
-                                 (onClick)="selectAnswer(questions[currentIndex]._id, ans.key)"></p-radioButton>
-                  <label class="ml-3 cursor-pointer" [for]="ans.key">{{ ans.answer }}</label>
-                </div>
-              </div>
-            }
-          </div>
-        } @else {
-          <div class="py-10 text-center text-gray-500">No questions found.</div>
-        }
+                   }" (click)="selectAnswer(questions[currentIndex]._id, ans.key)">
+        <div class="flex items-center">
+          <p-radioButton name="answer" [inputId]="ans.key" [value]="ans.key" [disabled]="reviewMode"
+            [ngModel]="selections[questions[currentIndex]._id]"
+            (onClick)="selectAnswer(questions[currentIndex]._id, ans.key)"></p-radioButton>
+          <label class="ml-3 cursor-pointer" [for]="ans.key">{{ ans.answer }}</label>
+        </div>
+      </div>
       }
+    </div>
+    } @else {
+    <div class="py-10 text-center text-gray-500">No questions found.</div>
+    }
+    }
     }
   </div>
 
   <!--* Footer -->
   <div class="flex items-center justify-between w-full px-4 pb-4 ">
     @if ((showResults$ | async) && !reviewMode) {
-      <button *ngIf="questions.length === 0" pButton type="button" label="Close" class="p-button-outlined" (click)="close()"></button>
-      <button pButton type="button" label="Show Results" class="p-button-success" (click)="showDetailedResults()"></button>
+    <button *ngIf="questions.length === 0" pButton type="button" label="Close" class="p-button-outlined"
+      (click)="close()"></button>
+    <button pButton type="button" label="Show Results" class="p-button-success"
+      (click)="showDetailedResults()"></button>
     } @else if (reviewMode) {
-      <button pButton type="button" label="Close" class="" (click)="close()"></button>
-      <div class="flex items-center gap-2">
-        <button pButton type="button" label="Back" (click)="back()" [disabled]="currentIndex === 0"></button>
-        <button pButton type="button" label="Next" (click)="next()" [disabled]="!canGoNext"></button>
-      </div>
+    <button pButton type="button" label="Close" class="" (click)="close()"></button>
+    <div class="flex items-center gap-2">
+      <button pButton type="button" label="Back" (click)="back()" [disabled]="currentIndex === 0"></button>
+      <button pButton type="button" label="Next" (click)="next()" [disabled]="!canGoNext"></button>
+    </div>
     } @else {
-      <div class="flex items-center gap-2">
-        <button *ngIf="questions.length === 0" pButton type="button" label="Close" class="p-button-outlined" (click)="close()"></button>
-        <button pButton type="button" label="Back" class="p-button-outlined" (click)="back()" [disabled]="currentIndex === 0"></button>
-      </div>
-      <div class="flex items-center gap-2">
-        <button pButton type="button" label="Next" (click)="next()" [disabled]="!canGoNext"></button>
-        <button pButton type="button" label="Submit" class="p-button-success" (click)="submit()" [disabled]="!canSubmit"></button>
-      </div>
+    <div class="flex items-center gap-2">
+      <button *ngIf="questions.length === 0" pButton type="button" label="Close" class="p-button-outlined"
+        (click)="close()"></button>
+      <button pButton type="button" label="Back" class="p-button-outlined" (click)="back()"
+        [disabled]="currentIndex === 0"></button>
+    </div>
+    <div class="flex items-center gap-2">
+      <button pButton type="button" label="Next" (click)="next()" [disabled]="!canGoNext"></button>
+      <button pButton type="button" label="Submit" class="p-button-success" (click)="submit()"
+        [disabled]="!canSubmit"></button>
+    </div>
     }
   </div>
 </p-dialog>
