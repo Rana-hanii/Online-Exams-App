@@ -4,10 +4,14 @@
 @import "primeicons/primeicons.css";
 @import "aos/dist/aos.css";
 
+html{
+  scroll-behavior: smooth;
+}
 body {
   font-family: "Poppins", sans-serif;
   font-style: normal;
 }
+
 
 .bg-layout {
   background-color: #fbf9f9;

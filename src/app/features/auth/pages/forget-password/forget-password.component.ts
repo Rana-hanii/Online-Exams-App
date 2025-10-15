@@ -74,7 +74,7 @@ export class ForgetPasswordComponent implements OnDestroy {
           });
           setTimeout(() => {
             this.router.navigate(['/auth/verify-code']);
-          }, 9000);
+          }, 3000);
         },
         error: (error) => {
           // Error response

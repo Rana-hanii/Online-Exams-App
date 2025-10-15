@@ -84,7 +84,7 @@ export class SignInComponent implements OnDestroy {
           });
           setTimeout(() => {
             this.router.navigate(['/student/dashboard']);
-          }, 4000);
+          }, 3000);
         },
         error: (error) => {
           // Error response

@@ -1,10 +1,13 @@
 import { Routes } from '@angular/router';
 import { StudentLayoutComponent } from '../../layouts/student-layout/student-layout.component';
+import { ModalGuard } from '../guards/modal.guard';
+import { StudentGuard } from '../guards/student.guard';
 
 export const STUDENT_ROUTES: Routes = [
   {
     path: '',
     component: StudentLayoutComponent,
+    canActivate: [StudentGuard],
     children: [
       {
         path: '',
@@ -31,6 +34,7 @@ export const STUDENT_ROUTES: Routes = [
           import(
             '../../features/student/components/exam-modal/exam-modal.component'
           ).then((m) => m.ExamModalComponent),
+        canDeactivate: [ModalGuard],
       },
       {
         path: 'exams/:subjectId',

@@ -95,7 +95,7 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
           });
           setTimeout(() => {
             this.router.navigate(['/auth/set-password']);
-          }, 9000);
+          }, 3000);
         },
         error: (error) => {
           // Error response
