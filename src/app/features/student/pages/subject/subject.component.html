@@ -1,80 +1,80 @@
 <div class="h-full bg-gray-50 py-3">
   <div class="mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
-    <div class="mb-8" dataAos="fade-down" dataAosDuration="1000"
-    data-aos-delay="400">
+    <div class="mb-8" dataAos="fade-down" dataAosDuration="1000" data-aos-delay="400">
       <h1 class="text-3xl font-bold text-gray-900 mb-2 mt-10 lg:mt-0">All Subjects</h1>
       <p class="text-gray-600">Browse through all available subjects and start your learning journey</p>
       @if (subjectsCount$ | async) {
-        <p class="text-sm text-gray-500 mt-1">{{ subjectsCount$ | async }} subjects available</p>
+      <p class="text-sm text-gray-500 mt-1">{{ subjectsCount$ | async }} subjects available</p>
       }
     </div>
 
-
-
     <!-- Subjects Grid -->
     <div class="lg:h-[70vh] lg:overflow-y-auto lg:pe-6 py-3 lg:ps-2 " dataAos="fade-up" dataAosDuration="1000"
-    data-aos-delay="400">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" >
+      data-aos-delay="400">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         @if (loading$ | async) {
-          <div class="col-span-full py-12 text-center">
-            <div class="inline-block h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <p class="mt-3 text-gray-600">Loading subjects...</p>
+        <div class="col-span-full py-12 text-center">
+          <div class="inline-block h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin">
           </div>
+          <p class="mt-3 text-gray-600">Loading subjects...</p>
+        </div>
         } @else {
-          @if (error$ | async) {
-            <div class="col-span-full text-red-600 text-center py-6 bg-red-50 rounded-lg">
-              <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        @if (error$ | async) {
+        <div class="col-span-full text-red-600 text-center py-6 bg-red-50 rounded-lg">
+          <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          {{ error$ | async }}
+        </div>
+        }
+
+        @for (subject of (filteredSubjects$ | async) || []; track subject._id) {
+        <div
+          class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+           [routerLink]="['/student/exams', subject._id]">
+          <div class="relative h-48 overflow-hidden">
+            <img [src]="subject.icon" [alt]="subject.name"
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          </div>
+
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ subject.name }}</h3>
+            <p class="text-gray-600 text-sm mb-4">Explore exams and quizzes for this subject</p>
+
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-500">Click to view exams</span>
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
               </svg>
-              {{ error$ | async }}
             </div>
+          </div>
+        </div>
+        } @empty {
+        <div class="col-span-full text-center py-12">
+          @if (searchTerm) {
+          <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No subjects found</h3>
+          <p class="text-gray-600">No subjects match your search for "{{ searchTerm }}".</p>
+          } @else {
+          <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+            </path>
+          </svg>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No subjects found</h3>
+          <p class="text-gray-600">There are no subjects available at the moment.</p>
           }
-          
-          @for (subject of (filteredSubjects$ | async) || []; track subject._id) {
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
-                 [routerLink]="['/student/exams', subject._id]">
-              <div class="relative h-48 overflow-hidden">
-                <img 
-                  [src]="subject.icon" 
-                  [alt]="subject.name"
-                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-              </div>
-              
-              <div class="p-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ subject.name }}</h3>
-                <p class="text-gray-600 text-sm mb-4">Explore exams and quizzes for this subject</p>
-                
-                <div class="flex items-center justify-between">
-                  <span class="text-sm text-gray-500">Click to view exams</span>
-                  <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          } @empty {
-            <div class="col-span-full text-center py-12">
-              @if (searchTerm) {
-                <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No subjects found</h3>
-                <p class="text-gray-600">No subjects match your search for "{{ searchTerm }}".</p>
-              } @else {
-                <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                </svg>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No subjects found</h3>
-                <p class="text-gray-600">There are no subjects available at the moment.</p>
-              }
-            </div>
-          }
+        </div>
+        }
         }
       </div>
     </div>
-    
+
   </div>
 </div>

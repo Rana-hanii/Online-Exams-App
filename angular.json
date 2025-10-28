@@ -26,8 +26,8 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              
+            "styles": [ 
+                    
               "src/styles.css"
             ],
             "scripts": [],

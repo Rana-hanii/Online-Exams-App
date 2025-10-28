@@ -8,7 +8,7 @@
     <!--! Form -->
     <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" class="space-y-4 w-2xs md:w-sm lg:w-lg max-w-lg mx-auto" >
       <!--! Username -->
-      <div class="flex items-center justify-center flex-col gap-1">
+      <div class="flex  justify-center flex-col gap-1">
         <input pInputText type="text" id="username" placeholder="Username" formControlName="username"
           [class.ng-invalid]="isInvalid('username')"
           class="w-full  p-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" />

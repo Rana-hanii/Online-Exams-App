@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -14,26 +22,38 @@ import { loadExams } from '../../../../store/exams/exams.actions';
 import { selectAllExams } from '../../../../store/exams/exams.selectors';
 import { AosDirective } from '../../../../shared/directives/aos.directive';
 
-
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, InputIcon, IconField, InputTextModule, FormsModule, AvatarModule, RouterLink,RouterLinkActive,AosDirective],
+  imports: [
+    CommonModule,
+    InputIcon,
+    IconField,
+    InputTextModule,
+    FormsModule,
+    AvatarModule,
+    RouterLink,
+    RouterLinkActive,
+    AosDirective,
+  ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
   @Output() toggleSidebar = new EventEmitter<void>();
 
   store = inject(Store<AppState>);
   router = inject(Router);
+  eRef = inject(ElementRef);
 
-  // Search model
+  //! Search model
   searchText = '';
+  isMenuOpen = false;
+  selectedExamId: string | null = null;
 
-  // all exams from store
+  //! all exams from store
   allExams$: Observable<Exam[]> = this.store.select(selectAllExams);
 
-  // computed matches (first 10)
+  //! computed matches (first 10)
   matches$: Observable<Exam[]> = this.allExams$.pipe(
     map((exams) =>
       exams.filter((e) =>
@@ -43,9 +63,6 @@ export class HeaderComponent implements OnInit {
     map((arr) => arr.slice(0, 10))
   );
 
-  // currently selected exam id (set by clicking a suggestion or by first match)
-  selectedExamId: string | null = null;
-
   onToggleSidebar() {
     this.toggleSidebar.emit();
   }
@@ -53,6 +70,16 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     // make sure all exams are loaded so search works site-wide
     this.store.dispatch(loadExams());
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.isMenuOpen = false;
+    }
+  }
+  onSearchChange() {
+    this.isMenuOpen = !!this.searchText.trim();
   }
 
   pickExam(exam: Exam) {
@@ -64,10 +91,18 @@ export class HeaderComponent implements OnInit {
     const id = this.selectedExamId;
     if (!id) {
       // try to pick first match if none explicitly selected
-      this.allExams$.pipe(map(exams => exams.find(e => e.title?.toLowerCase().includes(this.searchText.toLowerCase())))).subscribe(found => {
-        const fid = found?._id;
-        if (fid) this.router.navigate(['/student/exam-modal', fid]);
-      });
+      this.allExams$
+        .pipe(
+          map((exams) =>
+            exams.find((e) =>
+              e.title?.toLowerCase().includes(this.searchText.toLowerCase())
+            )
+          )
+        )
+        .subscribe((found) => {
+          const fid = found?._id;
+          if (fid) this.router.navigate(['/student/exam-modal', fid]);
+        });
       return;
     }
     this.router.navigate(['/student/exam-modal', id]);
